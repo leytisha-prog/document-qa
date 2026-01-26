@@ -26,7 +26,7 @@ st.Page(
     title="Lab 2: OpenAI Integration",
 
     # Optional icon for the page. Can be a string (e.g., emoji) or an image URL
-    icon="None",    
+    icon=":robot_face:",    
 
     # Optional URL path for the page (what shows in the address bar).
     # If None, Streamlit infers the path from the file name
@@ -37,21 +37,6 @@ st.Page(
     default=True,
 
 )
-# Default parameters
-st.set_page_config(page_title="OpenAI Streamlit App", page_icon='None', layout="centered", initial_sidebar_state="auto", menu_items=None)
-
-    # Configure global settings for the Streamlit app (must be called from the top)
-st.set_page_config(
-        page_title="Leytisha's App",
-        page_icon="🤖",
-        layout="wide",
-        initial_sidebar_state="expanded",
-        menu_items={
-            'Get Help': 'https://www.example.com/help',
-            'Report a bug': 'https://www.example.com/bug',
-            'About': "This is a simple Streamlit app using OpenAI's API."
-        }
-    )
 
 # Create pages for navigation
 create_page = st.Page('create.py', title='Create entry', icon=':material/add_circle')
