@@ -26,7 +26,7 @@ st.Page(
     title="Lab 2: OpenAI Integration",
 
     # Optional icon for the page. Can be a string (e.g., emoji) or an image URL
-    icon=":robot_face:",    
+    icon="🤖",
 
     # Optional URL path for the page (what shows in the address bar).
     # If None, Streamlit infers the path from the file name
