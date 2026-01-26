@@ -18,6 +18,6 @@ st.Page(
 
     # Whether this page is the default page loaded on app start
     # Only one page should be set to True
-    default=False,
+    default=True,
 
 )
