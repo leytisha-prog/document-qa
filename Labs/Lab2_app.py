@@ -8,8 +8,6 @@ st.write(
     "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
 )
 
-
-
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
@@ -22,7 +20,7 @@ else:
     try:
         # Validation line (right here)
         OpenAI(api_key=openai_api_key).chat.completions.create(
-            model="gpt-chat-latest",
+            model="gpt-5-nano",
             messages=[{"role": "user", "content": "ping"}],
             max_tokens=1
         )
@@ -68,7 +66,7 @@ if uploaded_file and question:
 
         # Generate an answer using the OpenAI API.
         stream = client.chat.completions.create(
-            model="gpt-5-nano",
+            model="gpt-chat-latest",
             messages=messages,
             stream=True,
         )
