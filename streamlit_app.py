@@ -18,30 +18,12 @@ st.set_page_config(
         }
     )
 
-st.Page(
-    # String path to the page's Python file, relative to the main app file
-    "Labs/Lab2_app.py",
-
-    # Optional title for the page. If None, Streamit infers the title
-    title="Lab 2: OpenAI Integration",
-
-    # Optional icon for the page. Can be a string (e.g., emoji) or an image URL
-    icon="🤖",
-
-    # Optional URL path for the page (what shows in the address bar).
-    # If None, Streamlit infers the path from the file name
-    url_path="None",
-
-    # Whether this page is the default page loaded on app start
-    # Only one page should be set to True
-    default=True,
-
-)
 
 # Create pages for navigation
-create_page = st.Page('Lab2_app.py', title='Create entry', icon=':material/add_circle')
+Lab1_page = st.Page("Labs/Lab1_app.py", title="Lab 1", icon="desktop_computer")
+Lab2_page = st.Page("Labs/Lab2_app.py", title="Lab 2", icon="robot_face")
 delete_page = st.Page('delete.py', title='Delete entry', icon=':material/delete')
 
-pg = st.navigation( [create_page, delete_page],)
+pg = st.navigation( [Lab1_page, Lab2_page, delete_page],)
 st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
 pg.run() 
