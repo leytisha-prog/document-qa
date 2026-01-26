@@ -17,3 +17,9 @@ st.set_page_config(
             'About': "This is a simple Streamlit app using OpenAI's API."
         }
     )
+create_page = st.Page('Lab2_app.py', title='Create entry', icon=':material/add_circle')
+delete_page = st.Page('delete.py', title='Delete entry', icon=':material/delete')
+
+pg = st.navigation( [create_page, delete_page],)
+st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
+pg.run() 
