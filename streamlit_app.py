@@ -24,6 +24,6 @@ Lab1_page = st.Page("Labs/Lab1_app.py", title="Lab 1", icon="📄")
 Lab2_page = st.Page("Labs/Lab2_app.py", title="Lab 2", icon="🧪")
 
 
-pg = st.navigation( [Lab1_page, Lab2_page, delete_page],)
+pg = st.navigation( [Lab1_page, Lab2_page])
 st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
 pg.run() 
