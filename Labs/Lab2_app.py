@@ -9,9 +9,9 @@ st.write(
 )
 
 secret_key = st.secrets.OPEN_AI_KEY
-st.write("OPEN_AI_KEY:", secret_key)
+st.write(":", secret_key)
 
-st.write("OPEN_AI_KEY:", st.secrets["OPEN_AI_KEY"])
+st.write(":", st.secrets[""])
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
