@@ -1,3 +1,7 @@
+import streamlit as st
+from openai import OpenAI
+
+
 st.Page(
     # String path to the page's Python file, relative to the main app file
     "Labs/Lab2_app.py",
