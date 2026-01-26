@@ -22,7 +22,7 @@ else:
     try:
         # Validation line (right here)
         OpenAI(api_key=openai_api_key).chat.completions.create(
-            model="gpt-5-nano",
+            model="gpt-chat-latest",
             messages=[{"role": "user", "content": "ping"}],
             max_tokens=1
         )
