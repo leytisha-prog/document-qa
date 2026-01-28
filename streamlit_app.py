@@ -1,5 +1,7 @@
 import streamlit as st
 from openai import OpenAI
+import PyPDF2
+import io
 
 
 # Default parameters
