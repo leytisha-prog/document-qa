@@ -18,7 +18,7 @@ st.set_page_config(
             'About': "This is a simple Streamlit app using OpenAI's API."
         }
     )
-st.sidebar.header("is :red[_Options_]")
+st.sidebar.header(":red[Options]")
 
 summary_type = st.sidebar.radio(
     "Choose summary type:",
