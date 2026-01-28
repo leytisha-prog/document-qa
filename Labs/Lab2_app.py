@@ -64,7 +64,7 @@ if "OPEN_AI_KEY" in st.secrets:
                     messages=messages,
                     stream=True,
                 )
- 
+                
             # Stream the response to the app using `st.write_stream`.
                 st.write_stream(stream)
  
