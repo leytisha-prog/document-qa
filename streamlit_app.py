@@ -18,23 +18,6 @@ st.set_page_config(
             'About': "This is a simple Streamlit app using OpenAI's API."
         }
     )
-st.sidebar.header(":red[Options]")
-
-summary_type = st.sidebar.radio(
-    "Choose summary type:",
-
-    [
-        "100-word summary",
-        "Two-paragraph summary",
-        "Five bullet points"
-    ]
-)
-
-use_advanced_model = st.sidebar.checkbox("Use advanced model (GPT-4)")
-
-model_name = "gpt-4o" if use_advanced_model else "gpt-4o-mini"
-
-
 
 
 # Create pages for navigation

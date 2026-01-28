@@ -68,6 +68,7 @@ if "OPEN_AI_KEY" in st.secrets:
             # Stream the response to the app using `st.write_stream`.
                 st.write_stream(stream)
  
+
     except Exception as e:
         st.error("Invalid API Key, please try again.")
 
