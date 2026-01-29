@@ -39,7 +39,7 @@ use_advanced_model = st.sidebar.checkbox("Use advanced model (gpt-4o)")
 
 model_name = "gpt-4o" if use_advanced_model else "gpt-4o-mini"
 
-uploaded_file = st.file_upload(
+uploaded_file = st.file_uploader(
     "Upload a document (.txt or .pdf)", type=("txt", "pdf")
 )
 
