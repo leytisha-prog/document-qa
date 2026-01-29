@@ -11,10 +11,9 @@ def read_pdf(uploaded_file):
     return text
 
 # Show title and description.
-st.title("Leytisha's Lab 2 - Document Summarizer App")
+st.title("Document Summarizer App")
 st.write(
     "Upload a PDF or a TXT document below and ask a question about it – GPT will answer! "
-    #"To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
 )
 
 # Ask user for their OpenAI API key via `st.text_input`.
