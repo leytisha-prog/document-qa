@@ -16,6 +16,26 @@ st.write(
     "Upload a PDF or a TXT document below and ask a question about it – GPT will answer! "
 )
 
+st.sidebar.header("Summary Options")
+
+summary_type = st.sidebar.radio(
+    "Choose summary type:",
+    [
+        "100-word summary",
+        "Two-paragraph summary",
+        "Five bullet points",
+    ],
+)
+
+use_advanced_model = st.sidebar.checkbox("Use advanced model (gpt-4o)")
+
+model_name = "gpt-4o" if use_advanced_model else "gpt-4o-mini"
+
+uploaded_file = st.file_upload(
+    "Upload a document (.txt or .pdf)", type=("txt", "pdf")
+)
+
+
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
