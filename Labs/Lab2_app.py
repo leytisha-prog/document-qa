@@ -59,7 +59,7 @@ st.write(
 st.sidebar.header("Summary Options")
 
 summary_type = st.sidebar.radio(
-    "Choose summary type:",
+    "blue: Choose summary type:",
     [
         "100-word summary",
         "Two-paragraph summary",
