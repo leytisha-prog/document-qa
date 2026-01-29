@@ -4,23 +4,24 @@ import PyPDF2
 import io
 
 
+# Use markdown to style generate summary button
 
 st.markdown("""
 <style>
 /* Targets the button element inside a specific Streamlit container */
 div.stButton > button:first-child {
-    background-color: #ffffff; /* Custom background color */
+    background-color: #0078d4; /* Custom background color */
     color: white;              /* Text color */
-    border: #b027f5;          /* Border color */
+    border: none;
     border-radius: 8px;        /* Rounded corners */
     padding: 10px 24px;
     cursor: pointer;
-    font-size: 16px; 
+    font-size: 16px;
 }
 
 /* Changes style on hover */
 div.stButton > button:first-child:hover {
-    background-color: #005f9e;
+    background-color: #005fa3;
 }
 
 /* Changes style when the button is active (clicked) */
@@ -29,6 +30,10 @@ div.stButton > button:first-child:active {
 }
 </style>
 """, unsafe_allow_html=True)
+
+st.button("My Custom Styled Button")
+
+
 
 
 def read_pdf(uploaded_file):
