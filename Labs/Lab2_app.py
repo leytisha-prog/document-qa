@@ -56,10 +56,10 @@ st.write(
     "Upload a PDF or a TXT document below and ask a question about it – GPT will answer! "
 )
 
-st.sidebar.header("Summary Options")
+st.sidebar.header(":blue[Summary Options]")
 
 summary_type = st.sidebar.radio(
-    ":dark-green [Choose summary type]:",
+    "Choose summary type:",
     [
         "100-word summary",
         "Two-paragraph summary",
