@@ -3,6 +3,36 @@ from openai import OpenAI
 import PyPDF2
 import io
 
+
+
+st.markdown("""
+<style>
+/* Targets the button element inside a specific Streamlit container */
+div.stButton > button:first-child {
+    background-color: #0078d4; /* Custom background color */
+    color: white;              /* Text color */
+    border: none;
+    border-radius: 8px;        /* Rounded corners */
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Changes style on hover */
+div.stButton > button:first-child:hover {
+    background-color: #005fa3;
+}
+
+/* Changes style when the button is active (clicked) */
+div.stButton > button:first-child:active {
+    background-color: #003e6b;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.button("My Custom Styled Button")
+
+
 def read_pdf(uploaded_file):
     pdf_reader = PyPDF2.PdfReader(uploaded_file)
     text = ""
