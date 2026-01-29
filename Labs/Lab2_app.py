@@ -12,7 +12,7 @@ def read_pdf(uploaded_file):
 
 try:
     client = OpenAI(
-        api_key=st.secrtes["OPEN_AI_KEY"]
+        api_key=st.secrets["OPEN_AI_KEY"]
     )
 except KeyError:
     st.error("OpenAI API key not found. Please set it in Streamlit secrets.")
