@@ -9,9 +9,9 @@ st.markdown("""
 <style>
 /* Targets the button element inside a specific Streamlit container */
 div.stButton > button:first-child {
-    background-color: #0078d4; /* Custom background color */
+    background-color: #000000; /* Custom background color */
     color: white;              /* Text color */
-    border: none;
+    border: #b027f5;          /* Border color */
     border-radius: 8px;        /* Rounded corners */
     padding: 10px 24px;
     cursor: pointer;
@@ -29,8 +29,6 @@ div.stButton > button:first-child:active {
 }
 </style>
 """, unsafe_allow_html=True)
-
-st.button("My Custom Styled Button")
 
 
 def read_pdf(uploaded_file):
