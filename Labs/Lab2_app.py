@@ -53,7 +53,7 @@ else:
 if uploaded_file:
     document_text = read_pdf(uploaded_file) if uploaded_file.name.endswith(".pdf") else uploaded_file.read().decode()
 
-    if st.button(type="secondary", label="Generate Summary"):
+    if st.button(type="tertiary", label="Generate Summary"):
         with st.spinner("Generating summary..."):
             response = client.chat.completions.create(
                 model=model_name,
