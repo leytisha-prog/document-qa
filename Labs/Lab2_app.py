@@ -70,7 +70,7 @@ if uploaded_file:
             )
         st.subheader("Summary:")
         st.write(response.choices[0].message.content)
-        st.write("Summary generated successfully!")
+        st.write("_Summary generated successfully!_")
 
 
 
