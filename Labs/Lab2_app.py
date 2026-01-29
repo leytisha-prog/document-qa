@@ -22,6 +22,7 @@ div.stButton > button:first-child {
 /* Changes style on hover */
 div.stButton > button:first-child:hover {
     background-color: #005fa3;
+            border-color: #004080;
 }
 
 /* Changes style when the button is active (clicked) */
