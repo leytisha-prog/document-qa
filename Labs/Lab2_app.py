@@ -11,12 +11,31 @@ def read_pdf(uploaded_file):
     return text
 
 
-try:
-    client = OpenAI(api_key=st.secrets["openai_api_key"])
-    st.success("API key validated ✅")
-except Exception: 
-    st.error("Invalid API key. Please check your Streamlit secrets.", icon="❌")
-    st.stop()
+openai_api_key = st.text_input("OpenAI API Key", type="password")
+if not openai_api_key:
+    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
+else:
+    # api_key = st.text_input("OpenAI API Key", type="password")
+      
+    try:
+        # Validation line (right here)
+        OpenAI(api_key=openai_api_key).chat.completions.create(
+            model="gpt-5-nano",
+            messages=[{"role": "user", "content": "ping"}],
+            max_tokens=1
+        )
+
+        st.success("API key validated ✅")
+
+        # Existing code continues unchanged
+        client = OpenAI(api_key=openai_api_key)
+
+        uploaded_file = st.file_uploader(
+            "Upload a document (.txt or .md)", type=("txt", "md")
+        )
+
+    except Exception:
+        st.error("Invalid API key. Please try again.", icon="❌")
 
 
 # Show title and description.
