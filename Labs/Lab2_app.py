@@ -10,6 +10,15 @@ def read_pdf(uploaded_file):
         text += page.extract_text()
     return text
 
+
+try:
+    client = OpenAI(api_key=st.secrets["openai_api_key"])
+    st.success("API key validated ✅")
+except Exception: 
+    st.error("Invalid API key. Please check your Streamlit secrets.", icon="❌")
+    st.stop()
+
+
 # Show title and description.
 st.title("Document Summarizer App")
 st.write(
@@ -35,60 +44,35 @@ uploaded_file = st.file_upload(
     "Upload a document (.txt or .pdf)", type=("txt", "pdf")
 )
 
+if summary_type == "100-word summary":
+    summary_instruction = "Summarize the following document in approximately 100 words."
+elif summary_type == "Two-paragraph summary":
+    summary_instruction = "Summarize the following document in two concise paragraphs."
+else:
+    summary_instruction = "Summarize the following document in five bullet points."
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-# remove this since secret key is being used openai_api_key = st.text_input("OpenAI API Key", type="password")
-if "OPEN_AI_KEY" in st.secrets:
-    # Create an OpenAI Client
-    client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
-    try:
-        client.models.list()
-        st.success("API key validated ✅")
-    # Let the user upload a file via `st.file_uploader`.
-        uploaded_file = st.file_uploader(
-            "Upload a document (.txt or .pdf)", type=("txt", "pdf")
-        )
-    
-    # Ask the user for a question via `st.text_area`.
-        question = st.text_area(
-            "Now ask a question about the document!",
-            placeholder="Can you give me a short summary?",
-            disabled=not uploaded_file,
-        )
- 
-        if uploaded_file and question:
-        # Process the uploaded file and question.
-                file_extension = uploaded_file.name.split('.')[-1]
-            
-                if file_extension == 'txt':
-                    document = uploaded_file.read().decode()
-                elif file_extension == 'pdf':
-                    document = read_pdf(uploaded_file)
-                else:
-                    st.error("Unsupported file type.")
-                    st.stop()
-                
-                messages = [
+if uploaded_file:
+    document_text = read_pdf(uploaded_file) if uploaded_file.name.endswith(".pdf") else uploaded_file.read().decode()
+
+    if st.button("Generate Summary"):
+        with st.spinner("Generating summary..."):
+            response = client.chat.completions.create(
+                model=model_name,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a helpful assistant that summarizes documents based on user instructions.",
+                    },
                     {
                         "role": "user",
-                        "content": f"Here's a document: {document} \n\n---\n\n {question}",
+                        "content": f"{summary_instruction}\n\nDocument:\n{document_text}",
                     }
                 ]
- 
-            # Generate an answer using the OpenAI API.
-                stream = client.chat.completions.create(
-                    model="gpt-5-nano",
-                    messages=messages,
-                    stream=True,
-                )
+            )
+        st.subheader("Summary:")
+        st.write(response.choices[0].message.content)
+        st.write("Summary generated successfully!")
 
-            # Stream the response to the app using `st.write_stream`.
-                st.write_stream(stream)
- 
 
-    except Exception as e:
-        st.error("Invalid API Key, please try again.")
 
 
