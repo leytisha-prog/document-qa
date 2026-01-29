@@ -9,18 +9,18 @@ st.markdown("""
 <style>
 /* Targets the button element inside a specific Streamlit container */
 div.stButton > button:first-child {
-    background-color: #000000; /* Custom background color */
+    background-color: #ffffff; /* Custom background color */
     color: white;              /* Text color */
     border: #b027f5;          /* Border color */
     border-radius: 8px;        /* Rounded corners */
     padding: 10px 24px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 16px; 
 }
 
 /* Changes style on hover */
 div.stButton > button:first-child:hover {
-    background-color: #005fa3;
+    background-color: #b027f5;
 }
 
 /* Changes style when the button is active (clicked) */
