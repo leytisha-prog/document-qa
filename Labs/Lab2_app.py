@@ -10,7 +10,7 @@ st.markdown("""
 <style>
 /* Targets the button element inside a specific Streamlit container */
 div.stButton > button:first-child {
-    background-color: #b8d1ff; /* Custom background color */
+    background-color: #002975; /* Custom background color */
     color: white;              /* Text color */
     border: none;
     border-radius: 8px;        /* Rounded corners */
