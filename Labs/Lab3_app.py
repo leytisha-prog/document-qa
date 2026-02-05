@@ -11,7 +11,7 @@ client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 # Set a default model
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4o"
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 
