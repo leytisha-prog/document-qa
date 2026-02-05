@@ -59,6 +59,20 @@ st.session_state.messages.append({"role": "assistant", "content": response})
    
 
 # Conversation Buffer to store the chat history 
+def trim_history(max_user_turns: int = 2) -> None:
+    """
+    Keeps:
+    - the system message (the last two messages in the history list)
+    - the last 'max_user_turns' user+assistant pairs (2 turns = 4 messages)
+    """
+    msgs = st.session_state.messages
+
+    system_msgs = [m for m in msgs if m["role"] == "system"]
+    chat_msgs = [m for m in msgs if m["role"] != "system" ]
+
+    # Keep the system messages and the last 'max_user_turns' user+assistant pairs
+    st.session_state.messages = system_msgs + chat_msgs[-(max_user_turns * 2):]
+    
 
 
     
