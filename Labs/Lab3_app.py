@@ -1,5 +1,5 @@
-import streamlit as st
 from openai import OpenAI
+import streamlit as st
 
 
 st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
