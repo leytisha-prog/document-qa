@@ -1,10 +1,22 @@
 import streamlit as st
+from openai import OpenAI
+
 
 st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
 
 message = st.chat_message("assistant")
 message.write()
 
+# Below is the code to set up OpenAI client and default model - pull responses from secrets
+
+# Set OpenAI API key from Streamlit secrets
+client = OpenAI(api_key=st.secrets["openai_api_key"])
+
+# Set a default model
+if "openai_model" not in st.session_state:
+    st.session_state["openai_model"] = "gpt-4o"
+
+# Below is the code for a simple chat interface using Streamlit's chat components
 
 # Initialize chat history
 if "messages" not in st.session_state:
