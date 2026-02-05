@@ -11,14 +11,14 @@ client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 # Set a default model
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"
+    st.session_state["openai_model"] = "gpt-4-turbo"
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! I'm Chatty G, your AI assistant. How can I help you today?"}
+        {"role": "assistant", "content": "Hello! I'm Chatty G, your AI assistant."}
     ]
 
 # Display chat messages from history on app rerun 
@@ -27,7 +27,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # React to user input
-if prompt := st.chat_input("Hello! I'm Chatty G, your AI assistant. How can I help you today?"):
+if prompt := st.chat_input("What would you like to ask Chatty G?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     # Display user message in chat message container
