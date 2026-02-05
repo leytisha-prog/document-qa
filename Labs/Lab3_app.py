@@ -10,7 +10,7 @@ message.write()
 # Below is the code to set up OpenAI client and default model - pull responses from secrets
 
 # Set OpenAI API key from Streamlit secrets
-client = OpenAI(api_key=st.secrets["openai_api_key"])
+client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 # Set a default model
 if "openai_model" not in st.session_state:
