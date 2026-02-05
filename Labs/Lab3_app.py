@@ -4,9 +4,6 @@ from openai import OpenAI
 
 st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
 
-message = st.chat_message("assistant")
-message.write()
-
 # Below is the code to set up OpenAI client and default model - pull responses from secrets
 
 # Set OpenAI API key from Streamlit secrets
