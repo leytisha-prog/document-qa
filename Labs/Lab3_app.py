@@ -16,8 +16,8 @@ for message in st.session_state.messages:
 # React to user input
 if prompt := st.chat_input("Hey ya'll! What's up?"):
     # Display user message in chat message container
-    with st.chat_message("user") :
-        st.markdown (prompt)
+    with st.chat_message("user"):
+        st.markdown(prompt)
         # Add user message to chat history 
         st.session_state.messages.append({"role": "user", "content": prompt})
         response = f"Echo: {prompt}"
