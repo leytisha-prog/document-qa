@@ -18,7 +18,16 @@ if "openai_model" not in st.session_state:
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! I'm Chatty G, your AI assistant."}
+        {
+            "role": "system", 
+            "content": (
+                "You are Chatty G, a helpful and friendly AI assistant."
+                "After answering a question, ask the user if they have any follow-up questions or if they would like to know more about a specific topic."
+                "Do not make up answers if you do not know the answer to a question."
+                "Do not repeat this question in later turns."
+                "Hello! I'm Chatty G, your AI assistant."
+            )
+        }   
     ]
 
 # Display chat messages from history on app rerun 
