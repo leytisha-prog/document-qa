@@ -1,5 +1,6 @@
 from openai import OpenAI
 import streamlit as st
+import tiktoken
 
 
 st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
@@ -9,9 +10,10 @@ st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
 # Set OpenAI API key from Streamlit secrets
 client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
-# Set a default model
+# Set a default model and max tokens for the chat completions
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4-turbo"
+MAX_TOKENS_IN = 4000
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 
@@ -22,13 +24,28 @@ if "messages" not in st.session_state:
             "role": "system", 
             "content": (
                 "You are Chatty G, a helpful and friendly AI assistant."
+                "Explain in simple terms, suitable for a 10-year-old."
                 "After answering a question, ask the user if they have any follow-up questions or if they would like to know more about a specific topic."
+                "If user says yes to follow-up questions, give them more information on the topic they asked about."
+                "If user says no to follow-up questions, end the conversaution politely and ask them to come back if they have more questions in the future."
                 "Do not make up answers if you do not know the answer to a question."
-                "Do not repeat this question in later turns."
-                "Hello! I'm Chatty G, your AI assistant."
             )
         }   
     ]
+enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
+
+# A function to count tokens in messages
+def tok(messages):
+    return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
+
+# Ensure system message is kept
+def build_context():
+    sys_msg = [m for m in st.session_state.messages if m["role"] == "system"]
+    # keep last 4 messages from chat history.
+    chat = [m for m in st.session_state.messages if m["role"] != "system"][-4:]
+
+    context = sys_msg + chat
+
 
 # Display chat messages from history on app rerun 
 for message in st.session_state.messages:
@@ -58,21 +75,8 @@ with st.chat_message("assistant"):
 st.session_state.messages.append({"role": "assistant", "content": response})        
    
 
-# Conversation Buffer to store the chat history 
-def trim_history(max_user_turns: int = 2) -> None:
-    """
-    Keeps:
-    - the system message (the last two messages in the history list)
-    - the last 'max_user_turns' user+assistant pairs (2 turns = 4 messages)
-    """
-    msgs = st.session_state.messages
 
-    system_msgs = [m for m in msgs if m["role"] == "system"]
-    chat_msgs = [m for m in msgs if m["role"] != "system" ]
 
-    # Keep the system messages and the last 'max_user_turns' user+assistant pairs
-    st.session_state.messages = system_msgs + chat_msgs[-(max_user_turns * 2):]
-    
 
 
     
