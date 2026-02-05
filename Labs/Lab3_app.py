@@ -4,6 +4,10 @@ import numpy as np
 
 st.title ("Chatty G - Lab 3: Streamlit Chat Interface")
 
+message = st.chat_message("assistant")
+message.write("Hello! I'm Chatty G, your AI assistant. How can I help you today?")
+
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -14,7 +18,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # React to user input
-if prompt := st.chat_input("Hey ya'll! What's up?"):
+if prompt := st.chat_input("Got a question?"):
     # Display user message in chat message container
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -26,6 +30,8 @@ if prompt := st.chat_input("Hey ya'll! What's up?"):
             st.markdown(response)
             # Add assistant response to chat history
             st.session_state.messages.append({"role": "assistant", "content": response})
+
+
     
 
 
