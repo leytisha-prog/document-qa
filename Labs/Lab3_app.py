@@ -43,8 +43,13 @@ def build_context():
     sys_msg = [m for m in st.session_state.messages if m["role"] == "system"]
     # keep last 4 messages from chat history.
     chat = [m for m in st.session_state.messages if m["role"] != "system"][-4:]
-
     context = sys_msg + chat
+
+    # Remove oldest messages until within token limit
+    while len(chat) > 0 and tok(context) > MAX_TOKENS_IN:
+        chat.pop(0)
+        context = sys_msg + chat
+    return context
 
 
 # Display chat messages from history on app rerun 
