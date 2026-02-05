@@ -17,7 +17,9 @@ if "openai_model" not in st.session_state:
 
 # Initialize chat history
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Hello! I'm Chatty G, your AI assistant. How can I help you today?"}
+    ]
 
 # Display chat messages from history on app rerun 
 for message in st.session_state.messages:
