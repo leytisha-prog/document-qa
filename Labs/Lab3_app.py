@@ -15,21 +15,6 @@ if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4-turbo"
 MAX_TOKENS_IN = 4000
 
-def estimate_tokens(messages):
-    return int(sum(len(m["content"].split()) for m in messages) * 1.3)
-
-tokens_used = estimate_tokens(context=st.session_state.get("messages", []))
-MAX_TOKENS_IN = 800  # or whatever you defined earlier
-
-with st.sidebar:
-    st.subheader("🔢 Token Usage")
-    pct = int((tokens_used / MAX_TOKENS_IN) * 100)
-    pct = max(0, min(pct, 100))
-    st.progress(pct)
-    st.write(f"{tokens_used} / {MAX_TOKENS_IN} tokens")
-
-
-
 # Below is the code for a simple chat interface using Streamlit's chat components
 # Initialize chat history
 if "messages" not in st.session_state:
