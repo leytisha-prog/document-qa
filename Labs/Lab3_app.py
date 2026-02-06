@@ -37,19 +37,6 @@ enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
 def tok(messages):
     return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
 
-# A function to count tokens in text
-def count_tokens_text(text):
-    return len(enc.encode(text))
-
-with st.sidebar:
-    st.subheader("Token Usage")
-
-    tokens_used = estimate_tokens = tok(st.session_state.messages)
-    progress = tokens_used / MAX_TOKENS_IN, 1.0
-
-    st.progress(progress)
-    st.write(f"Tokens used: {tokens_used} / {MAX_TOKENS_IN}")
-
 
 # Ensure system message is kept
 def build_context():
