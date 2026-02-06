@@ -13,7 +13,16 @@ client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 # Set a default model and max tokens for the chat completions
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4-turbo"
-MAX_TOKENS_IN = 4000
+
+# Token limit for input messages shown in progress bar
+MAX_TOKENS_IN = 900
+
+# Token counter without tiktoken
+def estimate_tokens(messages) -> int:
+    words = sum(len((m.get("content") or "").split()) for m in messages)
+    return int(words * 1.3)  # Estimate tokens as 1.3x the number of words
+
+st.write("Estimated tokens:", estimate_tokens(st.session_state.messages))
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 # Initialize chat history
@@ -36,41 +45,6 @@ enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
 # A function to count tokens in messages
 def tok(messages):
     return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
-
-def count_tokens(text, model="gpt-4o-mini"):
-    """Returns the number of tokens in a text string for a given model."""
-    try:
-        encoding = tiktoken.encoding_for_model(model)
-    except KeyError:
-        # Fallback to a general encoding if the model is not found
-        st.warning(f"Model {model} not found, using cl100k_base encoding.")
-        encoding = tiktoken.get_encoding("cl100k_base")
-
-    token_integers = encoding.encode(text)
-    return len(token_integers)
-
-st.set_page_config(page_title="LLM Token Counter", layout="centered")
-st.header("LLM Input Token Counter")
-
-# User selects the model
-model_choice = st.selectbox("Select OpenAI Model", 
-                            ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"], 
-                            index=0)
-
-# User enters text
-input_text = st.text_area("Enter your text here:", height=200)
-
-if input_text:
-    # Calculate tokens in real-time
-    token_count = count_tokens(input_text, model=model_choice)
-
-    # Display the count
-    st.info(f"Token count: **{token_count}**")
-
-    # Optional: Display a warning if the count approaches the context limit (e.g., 4096 for some older models, 128k+ for newer ones)
-    # Check specific model limits on the [OpenAI documentation](https://platform.openai.com/docs/models/overview)
-
-
 
 # Ensure system message is kept
 def build_context():
@@ -100,7 +74,18 @@ if prompt := st.chat_input("What would you like to ask Chatty G?"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-# Display assistant response in chat message container
+    context = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
+
+    tokens_used = estimate_tokens(context)
+    pct = int((tokens_used / MAX_TOKENS_IN) * 100) if MAX_TOKENS_IN else 0
+    pct = max(0, min(pct, 100))  # Ensure percentage is between 0 and 100
+
+    with st.sidebar:
+        st.subheader("Token Usage")
+        st.progress(pct, text=f"{tokens_used} / {MAX_TOKENS_IN} tokens (estimate)")
+
+
+# Display assistant response in chat message container (streaming)
 with st.chat_message("assistant"):
      stream = client.chat.completions.create(
          model=st.session_state["openai_model"],
