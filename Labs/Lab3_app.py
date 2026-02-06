@@ -14,14 +14,6 @@ client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4-turbo"
 
-# Token limit for input messages shown in progress bar
-MAX_TOKENS_IN = 900
-
-# Token counter without tiktoken
-def estimate_tokens(messages) -> int:
-    words = sum(len((m.get("content") or "").split()) for m in messages)
-    return int(words * 1.3)  # Estimate tokens as 1.3x the number of words
-
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 # Initialize chat history
@@ -40,6 +32,15 @@ if "messages" not in st.session_state:
         }   
     ]
 enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
+
+# Token limit for input messages shown in progress bar
+MAX_TOKENS_IN = 900
+
+# Token counter without tiktoken
+def estimate_tokens(messages) -> int:
+    words = sum(len((m.get("content") or "").split()) for m in messages)
+    return int(words * 1.3)  # Estimate tokens as 1.3x the number of words
+
 
 # A function to count tokens in messages
 def tok(messages):
