@@ -43,16 +43,14 @@ def count_tokens_text(text):
 
 with st.sidebar:
     st.subheader("Token Usage")
-    user_preview = st.text_area(
-        "Type text to count tokens:", height=200
-    )
 
-    if user_preview:
-        st.write(f"Tokens: {count_tokens_text(user_preview)}")
-    else:
-        st.write("Tokens: 0")
+    tokens_used = estimate_tokens = tok(st.session_state.messages)
+    progress = tokens_used / MAX_TOKENS_IN, 1.0
 
+    st.progress(progress)
+    st.write(f"Tokens used: {tokens_used} / {MAX_TOKENS_IN}")
 
+    
 # Ensure system message is kept
 def build_context():
     sys_msg = [m for m in st.session_state.messages if m["role"] == "system"]
