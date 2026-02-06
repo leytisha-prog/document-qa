@@ -18,7 +18,7 @@ MAX_TOKENS_IN = 4000
 def estimate_tokens(messages):
     return int(sum(len(m["content"].split()) for m in messages) * 1.3)
 
-tokens_used = estimate_tokens(context)
+tokens_used = estimate_tokens(context=st.session_state.get("messages", []))
 MAX_TOKENS_IN = 800  # or whatever you defined earlier
 
 with st.sidebar:
