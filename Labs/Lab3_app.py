@@ -22,7 +22,6 @@ def estimate_tokens(messages) -> int:
     words = sum(len((m.get("content") or "").split()) for m in messages)
     return int(words * 1.3)  # Estimate tokens as 1.3x the number of words
 
-st.write("Estimated tokens:", estimate_tokens(st.session_state.messages))
 
 # Below is the code for a simple chat interface using Streamlit's chat components
 # Initialize chat history
