@@ -16,14 +16,13 @@ if "openai_model" not in st.session_state:
 MAX_TOKENS_IN = 4000
 
 # Below is the code for a simple chat interface using Streamlit's chat components
-
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
             "role": "system", 
             "content": (
-                "You are Chatty G, a helpful and friendly AI assistant."
+                "You are Chatty G, a helpful and friendly AI teacher."
                 "Explain in simple terms, suitable for a 10-year-old."
                 "After answering a question, ask the user if they have any follow-up questions or if they would like to know more about a specific topic."
                 "If user says yes to follow-up questions, give them more information on the topic they asked about."
@@ -37,6 +36,22 @@ enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
 # A function to count tokens in messages
 def tok(messages):
     return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
+
+# A function to count tokens in text
+def count_tokens_text(text):
+    return len(enc.encode(text))
+
+with st.sidebar:
+    st.subheader("Token Usage")
+    user_preview = st.text_area(
+        "Type text to count tokens:", height=200
+    )
+
+    if user_preview:
+        st.write(f"Tokens: {count_tokens_text(user_preview)}")
+    else:
+        st.write("Tokens: 0")
+
 
 # Ensure system message is kept
 def build_context():
