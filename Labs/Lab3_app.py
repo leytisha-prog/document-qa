@@ -86,7 +86,6 @@ def build_context():
     return context
 
 
-
 # Display chat messages from history on app rerun 
 for message in st.session_state.messages:
     if message["role"] != "system":
