@@ -37,6 +37,40 @@ enc = tiktoken.encoding_for_model(st.session_state["openai_model"])
 def tok(messages):
     return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
 
+def count_tokens(text, model="gpt-4o-mini"):
+    """Returns the number of tokens in a text string for a given model."""
+    try:
+        encoding = tiktoken.encoding_for_model(model)
+    except KeyError:
+        # Fallback to a general encoding if the model is not found
+        st.warning(f"Model {model} not found, using cl100k_base encoding.")
+        encoding = tiktoken.get_encoding("cl100k_base")
+
+    token_integers = encoding.encode(text)
+    return len(token_integers)
+
+st.set_page_config(page_title="LLM Token Counter", layout="centered")
+st.header("LLM Input Token Counter")
+
+# User selects the model
+model_choice = st.selectbox("Select OpenAI Model", 
+                            ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"], 
+                            index=0)
+
+# User enters text
+input_text = st.text_area("Enter your text here:", height=200)
+
+if input_text:
+    # Calculate tokens in real-time
+    token_count = count_tokens(input_text, model=model_choice)
+
+    # Display the count
+    st.info(f"Token count: **{token_count}**")
+
+    # Optional: Display a warning if the count approaches the context limit (e.g., 4096 for some older models, 128k+ for newer ones)
+    # Check specific model limits on the [OpenAI documentation](https://platform.openai.com/docs/models/overview)
+
+
 
 # Ensure system message is kept
 def build_context():
