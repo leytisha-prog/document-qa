@@ -24,7 +24,7 @@ st.set_page_config(
 Lab1_page = st.Page("Labs/Lab1_app.py", title="Lab 1", icon="📄")
 Lab2_page = st.Page("Labs/Lab2_app.py", title="Lab 2", icon="🧪")
 Lab3_page = st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬")
-Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="ruler")
+Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="material/science")
 
 
 pg = st.navigation( [Lab1_page, Lab2_page, Lab3_page, Lab4_page])
