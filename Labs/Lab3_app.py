@@ -41,7 +41,6 @@ def estimate_tokens(messages) -> int:
     words = sum(len((m.get("content") or "").split()) for m in messages)
     return int(words * 1.3)  # Estimate tokens as 1.3x the number of words
 
-
 # A function to count tokens in messages
 def tok(messages):
     return sum(len(enc.encode(m.get("role","") + (m.get("content","") or ""))) for m in messages)
