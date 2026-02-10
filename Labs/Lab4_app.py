@@ -58,6 +58,7 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     text = "\n".join(pages_text).strip()
     return text
 
+folder_path = "./Labs/"
 #### ----- POPULATE COLLECTION WITH PDFs ------ ####
 # This function uses extract_text_from_pdf
 # and add_to_collection to put syllabi in ChromDB collection 
