@@ -28,6 +28,8 @@ if 'openai_client' not in st.session_state:
 # Collection = collection, already established 
 
 # text = extracted text from PDF files
+
+#Embeddings inserted into the collection from OpenAI 
 def add_to_collection(collection, text, file_name):
 
     # Create an embedding 
