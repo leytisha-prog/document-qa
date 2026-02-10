@@ -1,11 +1,11 @@
 
-# SQLite patch for Chroma MUST COME FIRST 
+# 1. SQLite patch for Chroma MUST BE FIRST 
 import sys
 
-# A fix
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
+# 2. Imports
 import streamlit as st
 from openai import OpenAI
 import chromadb
@@ -13,22 +13,15 @@ from pathlib import Path
 from PyPDF2 import PdfReader
 
 
-# Create ChromaDB client 
+# 3. Create ChromaDB and client setup
 chroma_client = chromadb.PersistentClient(path='./ChromaDB_for_Lab')
 collection = chroma_client.get_or_create_collection('Lab4Collection')
 
-## --------- USING CHROMA DB WITH OPENAI EMBEDDINGS -------- ###
-
 # Create OpenAI client 
 if 'openai_client' not in st.session_state:
-    st.session_state.openai_client = OpenAI(api_key=st.secrets.OPEN_AI_KEY)
+    st.session_state.openai_client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
-# A function that will add document to collection
-
-# Collection = collection, already established 
-
-# text = extracted text from PDF files
-
+# 4. Function definitions (NO Streamlit UI here)
 #Embeddings inserted into the collection from OpenAI 
 def add_to_collection(collection, text, file_name):
 
@@ -68,9 +61,41 @@ def extract_text_from_pdf(pdf_path: str) -> str:
 #### ----- POPULATE COLLECTION WITH PDFs ------ ####
 # This function uses extract_text_from_pdf
 # and add_to_collection to put syllabi in ChromDB collection 
-def load_pdfs_to_collection(folder_path, collection):
+def load_pdfs_to_collection(folder_path, str, collection) -> int:
+    folder = Path(folder_path)
+    pdf_files = sorted(folder.glob("*.pdf"))
 
-# Check if collection is empty and load PDFs
+    added_count = 0
+
+    for pdf_file in pdf_files:
+        text = extract_text_from_pdf(str(pdf_file))
+
+        # Skip empty PDFs
+        if not text:
+            continue
+
+        doc_id = safe_id_from_filename(pdf_file)
+
+        # Avoid duplicates if re-running
+        # Cheoma will error if you add the same id again
+        try:
+            add_to_collection(collection, text, doc_id)
+            added_count += 1
+        except Exception as e:
+            # If it's already there or another add error, you can skip/log
+            # You can also st.write(...) if you want to see it in the UI
+            continue
+        return added_count
+
+# 5 EXECUTION LOGIC HERE - Check if collection is empty and load PDFs
     if collection.count() == 0:
         loaded = load_pdfs_to_collection('./Lab-04-Data/', collection)
+        st.success(f"Loaded {loaded} PDFs into Chroma.")
+    else:
+        st.info("Chroma collection already populated.")
+
+# 6 UI/QUERY LOGIC
+st.header("Ask a question about the syllabi")
+
+    
 
