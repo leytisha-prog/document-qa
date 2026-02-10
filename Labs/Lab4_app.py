@@ -17,7 +17,7 @@ from PyPDF2 import PdfReader
 chroma_client = chromadb.PersistentClient(path='./ChromaDB_for_Lab')
 collection = chroma_client.get_or_create_collection('Lab4Collection')
 
-##--------- USING CHROMA DB WITH OPENAI EMBEDDINGS --------###
+## --------- USING CHROMA DB WITH OPENAI EMBEDDINGS -------- ###
 
 # Create OpenAI client 
 if 'openai_client' not in st.session_state:
@@ -48,3 +48,17 @@ def add_to_collection(collection, text, file_name):
         ids=file_name,
         embeddings=[embedding]
     )
+
+#### ----- EXTRACT TEXT FROM PDF ------ ####
+# This function extracts text from each syllabus 
+# to pass to add_to_collection
+def extract_text_from_pdf(pdf_path): ...
+
+#### ----- POPULATE COLLECTION WITH PDFs ------ ####
+# This function uses extract_text_from_pdf
+# and add_to_collection to put syllabi in ChromDB collection 
+def load_pdfs_to_collection(folder_path, collection):
+
+# Check if collection is empty and load PDFs
+    if collection.count() == 0:
+        loaded = load_pdfs_to_collection('./Lab-04-Data/', collection)
