@@ -7,6 +7,7 @@ from PyPDF2 import PdfReader
 
 # A fix
 __import__('pysqlite3')
+import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 # Create ChromaDB client 
