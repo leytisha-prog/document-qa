@@ -106,7 +106,7 @@ def load_pdfs_to_collection(folder_path: str, collection) -> int:
             # If it's already there or another add error, you can skip/log
             # You can also st.write(...) if you want to see it in the UI
             continue
-        return added_count
+        return added_count #put it outside the loop
 
 
 
@@ -144,7 +144,7 @@ if topic:
         n_results=3, # The number of closest documents to return
         include=["documents", "metadatas", "ids"]
     )
-    
+    # messages=["prompt(system)=["i want to lear about syllabus"],response=[]"]
     # Display the results
     st.subheader(f'Results for: {topic}')
 
