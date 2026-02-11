@@ -13,6 +13,12 @@ from pathlib import Path
 from PyPDF2 import PdfReader
 
 
+# APP UI -----------------------------
+###----Main App----###
+st.title('Lab 4: Chatbot Using RAG')
+### ----------------------------------
+
+
 # 3. Create ChromaDB and client setup --------------------------
 chroma_client = chromadb.PersistentClient(path='./ChromaDB_for_Lab')
 collection = chroma_client.get_or_create_collection('Lab4Collection')
@@ -21,10 +27,17 @@ collection = chroma_client.get_or_create_collection('Lab4Collection')
 if 'openai_client' not in st.session_state:
     st.session_state.openai_client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
+
+
+###--------- HELPERS --------- ###
 # 4. Function definitions (NO Streamlit UI here) -----------------
 #Embeddings inserted into the collection from OpenAI 
-def add_to_collection(collection, text, file_name):
 
+def safe_id_from_filename(pdf_file: Path) -> str:
+            return pdf_file.stem.replace(" ", "_")
+
+
+def add_to_collection(collection, text, str, doc_id: str):
     # Create an embedding 
     client = st.session_state.openai_client
     response = client.embeddings.create(
@@ -38,13 +51,16 @@ def add_to_collection(collection, text, file_name):
     # Add embedding and document to ChromaDB
     collection.add(
         documents=[text],
-        ids=[file_name],
-        embeddings=[embedding]
+        ids=[doc_id],
+        embeddings=[embedding],
+        metadatas=[{"souce": f"{doc_id}.pdf"}]
     )
+
 
 #### ----- EXTRACT TEXT FROM PDF ------ ####
 # This function extracts text from each syllabus 
 # to pass to add_to_collection
+
 def extract_text_from_pdf(pdf_path: str) -> str:
     reader = PdfReader(pdf_path)
     pages_text = []
@@ -55,13 +71,15 @@ def extract_text_from_pdf(pdf_path: str) -> str:
             pages_text.append(txt)
 
     # Join pages and lightly clean 
-    text = "\n".join(pages_text).strip()
-    return text
+    return "\n".join(pages_text).strip()
+     
 
-folder_path = "./Labs/pdf_files"
+
 #### ----- POPULATE COLLECTION WITH PDFs ------ ####
 # This function uses extract_text_from_pdf
 # and add_to_collection to put syllabi in ChromDB collection 
+
+folder_path = "./Labs/pdf_files"
 
 def load_pdfs_to_collection(folder_path: str, collection) -> int:
     folder = Path(folder_path)
@@ -77,12 +95,10 @@ def load_pdfs_to_collection(folder_path: str, collection) -> int:
             continue
         
         # Define doc id
-        def safe_id_from_filename(pdf_file: Path) -> str:
-            return pdf_file.stem.replace(" ", "_")
         doc_id = safe_id_from_filename(pdf_file)
 
-        # Avoid duplicates if re-running
-        # Cheoma will error if you add the same id again
+        # Skip if already exists
+        # Chroma will error if you add the same id again
         try:
             add_to_collection(collection, text, doc_id)
             added_count += 1
@@ -92,18 +108,23 @@ def load_pdfs_to_collection(folder_path: str, collection) -> int:
             continue
         return added_count
 
+
+
 # 5 EXECUTION LOGIC HERE - Check if collection is empty and load PDFs ------------
+
+PDF_FOLDER = "./Labs/pdf_files"
+
+with st.spinner("Checking/creating Chroma index..."):
     if collection.count() == 0:
         loaded = load_pdfs_to_collection('./Lab-04-Data/', collection)
         st.success(f"Loaded {loaded} PDFs into Chroma.")
     else:
         st.info("Chroma collection already populated.")
 
-# 6 UI/QUERY LOGIC
-st.header("Ask a question about the syllabi")
 
-### --------- MAIN APP --------- ###
-st.title('Lab 4: Chatbot Using RAG')
+
+# 6 UI/QUERY LOGIC ----------------------------------------------------------------
+st.header("Ask a question about the syllabi")
 
 ### --------- QUERYYING A COLLECTION - ONLY USED FOR TESTING --------- ###
 topic = st.sidebar.text-input('Topic', placeholder='Type your topic (e.g., GenAI)...')
@@ -120,17 +141,21 @@ if topic:
     # Get the text related to this question (this prompt)
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=3 # The number of closest documents to return
+        n_results=3, # The number of closest documents to return
+        include=["documents", "metadatas", "ids"]
     )
     
     # Display the results
     st.subheader(f'Results for: {topic}')
 
     for i in range(len(results['documents'][0])):
-        doc = results['documents'][0][i]
         doc_id = results['ids'][0][i]
+        source = results["metadatas"][0][i].get("source", "unknown")
 
         st.write(f'**{i+1}. {doc_id}**')
+
+        with st.expander(f"Show text for {doc_id}"):
+            st.write(results["documents"][0][i])
 
 else:
     st.info('Enter a topic in the sidebar to search the collection')
