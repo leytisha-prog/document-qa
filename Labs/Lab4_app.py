@@ -160,10 +160,3 @@ if topic:
 else:
     st.info('Enter a topic in the sidebar to search the collection')
 
-    
-    
-    
-
-
-    
-
