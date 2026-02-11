@@ -112,7 +112,7 @@ def load_pdfs_to_collection(folder_path: str, collection) -> int:
 
 # 5 EXECUTION LOGIC HERE - Check if collection is empty and load PDFs ------------
 
-PDF_FOLDER = "./Labs/pdf_files"
+PDF_FOLDER = "./Labs/Lab-04-Data"
 
 with st.spinner("Checking/creating Chroma index..."):
     if collection.count() == 0:
@@ -127,7 +127,7 @@ with st.spinner("Checking/creating Chroma index..."):
 st.header("Ask a question about the syllabi")
 
 ### --------- QUERYYING A COLLECTION - ONLY USED FOR TESTING --------- ###
-topic = st.sidebar.text-input('Topic', placeholder='Type your topic (e.g., GenAI)...')
+topic = st.sidebar.text_input('Topic', placeholder='Type your topic (e.g., GenAI)...')
 
 if topic:
     client = st.session_state.openai_client
