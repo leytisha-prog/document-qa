@@ -165,11 +165,15 @@ def answer_with_hybrid_rag(question: str, context: str):
       but clearly state it is not from the course documents.
     """ 
     client = st.session_state.openai_client
-
+    
+    # Prevents huge prompts, since PDFs are stored as full text
+    MAX_CHARS = 12000
+    context = (context or "") [:MAX_CHARS]
+    
     messages = [
         {
             "role": "system",
-            "'content": (
+            "content": (
                 "You are a course information chatbot."
                 "You have access to retrieved course documents via RAG."
                 "If the answer is found in the course documents, use them and say you used course documents via RAG."
@@ -194,7 +198,7 @@ Then answer accordingly,
     ]
     
     resp = client.chat.completions.create(
-        model="gpt-5.2",
+        model="gpt-4.1-mini",
         messages=messages,
         temperature=0.3
     )
