@@ -155,6 +155,7 @@ def retrieve_context(question: str, collection, k: int = 7):
     for i, doc in enumerate(docs):
         meta = metas[i] if i < len(metas) else {}
         doc_id = ids[i] if i < len(ids) else meta.get("source", f"doc_{i+1}")
+        meta = meta or {}
         src = meta.get("source", doc_id)
 
         sources.append(src)
