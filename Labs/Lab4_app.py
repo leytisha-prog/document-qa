@@ -24,7 +24,7 @@ CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"
 
 COLLECTION_NAME = "Lab4Collection"
 EMBED_MODEL = "text-embedding-3-small"
-CHAT_MODEL = "gpt-4.1-mini"  # change if my account has gpt-5-mini etc.
+CHAT_MODEL = "gpt-5-mini"  # change if my account has gpt-5-mini etc.
 
 
 # ----------------------------
@@ -249,7 +249,7 @@ if user_q:
 
 
 # ----------------------------
-# Optional maintenance for YOU (not required by assignment)
+# Optional maintenance  - helps with rebuilding vectorDB
 # ----------------------------
 st.sidebar.header("Maintenance (optional)")
 if st.sidebar.button("Delete collection and rebuild"):
