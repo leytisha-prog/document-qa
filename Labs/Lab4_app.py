@@ -89,7 +89,6 @@ def extract_text_from_pdf(pdf_path: str) -> str:
 # This function uses extract_text_from_pdf
 # and add_to_collection to put syllabi in ChromDB collection 
 
-folder_path = "./Labs/pdf_files"
 
 def load_pdfs_to_collection(folder_path: Path, collection) -> int:
     pdf_files = sorted(folder_path.glob("*.pdf"))
