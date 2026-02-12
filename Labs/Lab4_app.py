@@ -24,7 +24,7 @@ CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"
 
 COLLECTION_NAME = "Lab4Collection"
 EMBED_MODEL = "text-embedding-3-small"
-CHAT_MODEL = "gpt-5-mini"  # change if my account has gpt-5-mini etc.
+CHAT_MODEL = "gpt-4.1-mini"  #  gpt-5-mini doesn't appear to work with the temperature0.3
 
 
 # ----------------------------
