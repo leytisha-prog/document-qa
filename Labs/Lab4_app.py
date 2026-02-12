@@ -6,39 +6,38 @@ __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 # 2. Imports ---------------------------------------------------
+import re 
 import streamlit as st
 from openai import OpenAI
 import chromadb
 from pathlib import Path 
 from PyPDF2 import PdfReader
-import re
+
 
 
 # This file lives in Labs/, build paths from repos root
 BASE_DIR = Path(__file__).resolve().parents[1]
 PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"    # Put 7 PDFs here
-
-st.write("PDF folder:", str(PDF_FOLDER))
-st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
-
-
 CHROMA_DIR = BASE_DIR / "ChromaDB_for_Lab"
 
 
 # APP UI -----------------------------
 ###----Main App----###
 st.title('Lab 4: Chatbot Using RAG')
-### ----------------------------------
 
+# Visble checks for PDF files in system
+st.caption(f"PDF folder: {PDF_FOLDER}")
+st.caption(f"PDFs found: {[p.name for p in PDF_FOLDER.glob('*.pdf')]}")
+
+
+# Create OpenAI client (store once)
+if 'openai_client' not in st.session_state:
+    st.session_state.openai_client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 # 3. Create ChromaDB and client setup --------------------------
 chroma_client = chromadb.PersistentClient(path=str(CHROMA_DIR))
 collection = chroma_client.get_or_create_collection("Lab4Collection")
-st.write("Docs in collection:", collection.count())
-
-# Create OpenAI client 
-if 'openai_client' not in st.session_state:
-    st.session_state.openai_client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
+#st.write("Docs in collection:", collection.count())
 
 
 
@@ -92,7 +91,6 @@ def load_pdfs_to_collection(folder_path: Path, collection) -> int:
             add_to_collection(collection, text, doc_id, pdf_file.name)
             added_count += 1
         except Exception:
-            # Most common: doc_id already exists
             continue
 
     return added_count # MUST be out of loop! Thanks TA!
@@ -126,19 +124,35 @@ def retrieve_context(question: str, collection, k: int = 7):
     metas = (results.get("metadatas") or [[]]) [0]
     ids = (results.get("ids") or [[]]) [0]
 
+
+    # OPTIONAL - prioritize a specific course if user mentions it
+    m = re.search(r"\bIST\s*(\d{3})\b", question, re.IGNORECASE)
+    course_code = f"IST {m.group(1)}" if m else None
+
+    indexed = []
+    for i in range(len(docs)):
+        meta = metas[i] if i < len(metas) and metas[i] else {}
+        src = meta.get("source", "")
+        priority = 0 if (course_code and course_code.lower() in src.lower()) else 1
+        indexed.append((priority, i))
+    indexed.sort(key=lambda x: x[0])
+
     blocks = []
     sources = []
 
-    for i, doc in enumerate(docs):
-        meta = metas[i] if i < len(metas) else {}
-        doc_id = ids[i] if i < len(ids) else meta.get("source", f"doc_{i+1}")
-        meta = meta or {}
+    for _i, in indexed:
+        meta = metas[i] if i < len(metas) and metas[i] else {}
+        doc_id = ids[i] if i < len(ids) else f"doc_{i+1}"
         src = meta.get("source", doc_id)
 
         sources.append(src)
-        blocks.append(f"[SOURCE: {src}]\n{doc}")
+        blocks.append(f"[SOURCE: {src}]\n{docs[1]}")
 
-    return "\n\n---\n\n".join(blocks), sources
+    context = "\n\n---\n\n".join(blocks)
+
+    context = context [:12000] # cap to avoid request-too-large errors
+
+    return context, sources
 
 def answer_with_hybrid_rag(question: str, context: str):
     """
@@ -150,10 +164,6 @@ def answer_with_hybrid_rag(question: str, context: str):
     """ 
     client = st.session_state.openai_client
     
-    # Prevents huge prompts, since PDFs are stored as full text
-    MAX_CHARS = 12000
-    context = (context or "") [:MAX_CHARS]
-
     messages = [
         {
             "role": "system",
@@ -175,8 +185,7 @@ QUESTION:
 RETRIEVED COURSE DOCUMENT EXCERPTS:
 {context}
 
-First decide whether the excerpts contain relevant information.
-Then answer accordingly,
+Answer the question. If you used the excerpts, say so. If you did not, say so.
 """.strip()
         }
     ]
@@ -188,13 +197,29 @@ Then answer accordingly,
     )
     return resp.choices[0].message.content
 
+
+
+
 # 6. BUILD/REUSE VECTOR DB ---------------------------------------------------------
 if "Lab4_VectorDB" not in st.session_state:
     with st.spinner("Building Lab4 vector DB (first run only)..."):
         st.session_state.Lab4_VectorDB = build_lab4_vectordb()
 
 collection = st.session_state.Lab4_VectorDB
+
 st.write("Docs in collection:", collection.count())
+
+# Optional: reset button (helps if DB got built with wrong metadata/path earlier)
+st.sidebar.header("Maintenance")
+if st.sidebar.button("Rebuild VectorDB (if broken)"):
+    chroma_client = chromadb.PersistentClient(path=str(CHROMA_DIR))
+    try:
+        chroma_client.delete_collection("Lab4Collection")
+    except Exception:
+        pass
+    st.session_state.pop("Lab4_VectorDB", None)
+    st.success("Deleted collection. Refresh the page to rebuild from PDFs.")
+
 
 
 # 7. SIDEBAR: PART A TEST - toggle on/off --------------------------------------------
@@ -210,12 +235,6 @@ if run_test and test_query:
 
 # PART B - CHATBOT UI 
 st.header("Course Information Chatbot (Hybrid RAG)")
-
-st.caption(
-    "This chatbot retrieves relevant syllabus text (RAG)."
-    "If the answer is not in the PDFs, it will still answer using general knowledge and will say so." 
-    
-)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
