@@ -215,6 +215,7 @@ if "Lab4_VectorDB" not in st.session_state:
         st.session_state.Lab4_VectorDB = build_lab4_vectordb()
 
 collection = st.session_state.Lab4_VectorDB
+st.write("Docs in collection:", collection.count())
 
 
 # 7. SIDEBAR: PART A TEST - toggle on/off --------------------------------------------
