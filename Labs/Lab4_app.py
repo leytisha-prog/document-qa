@@ -60,7 +60,7 @@ def add_to_collection(collection, text: str, doc_id: str, source_name: str):
         documents=[text],
         ids=[doc_id],
         embeddings=[embedding],
-        metadatas=[{"souce": source_name}]
+        metadatas=[{"source": source_name}]
     )
 
 
@@ -137,20 +137,24 @@ def retrieve_context(question: str, collection, k: int = 3):
     results = collection.query(
         query_embeddings=[q_emb],
         n_results=k,
-        include=["documents", "metadatas", "ids"]
+        include=["documents", "metadatas"]
     )
 
-    docs = results["documents"][0]
-    metas = results["metadatas"][0]
-    ids = results["ids"][0]
+    docs = (results.get("documents") or [[]]) [0]
+    metas = (results.get("metadatas") or [[]]) [0]
+    ids = (results.get("ids") or [[]]) [0]
 
     blocks = []
     sources = []
-    for doc, meta, doc_id in zip(docs, metas, ids):
+
+    for i, doc in enumerate(docs):
+        meta = metas[i] if i < len(metas) else {}
+        doc_id = ids[i] if i < len(ids) else meta.get("source", f"doc_{i+1}")
         src = meta.get("source", doc_id)
+
         sources.append(src)
         blocks.append(f"[SOURCE: {src}]\n{doc}")
-    
+
     return "\n\n---\n\n".join(blocks), sources
 
 def answer_with_hybrid_rag(question: str, context: str):
