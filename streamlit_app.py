@@ -35,6 +35,6 @@ pg = st.navigation([
 pg.run()
 
 
-pg = st.navigation( [Lab1_page, Lab2_page, Lab3_page, Lab4_page])
-st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
-pg.run() 
+#pg = st.navigation( [Lab1_page, Lab2_page, Lab3_page, Lab4_page])
+#st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
+#pg.run() 
