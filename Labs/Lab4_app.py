@@ -33,7 +33,7 @@ st.title('Lab 4: Chatbot Using RAG')
 # 3. Create ChromaDB and client setup --------------------------
 chroma_client = chromadb.PersistentClient(path=str(CHROMA_DIR))
 collection = chroma_client.get_or_create_collection("Lab4Collection")
-#st.write("Docs in collection:", collection.count())
+st.write("Docs in collection:", collection.count())
 
 # Create OpenAI client 
 if 'openai_client' not in st.session_state:
@@ -169,6 +169,7 @@ def answer_with_hybrid_rag(question: str, context: str):
     - Use retrived PDFs if relevant.
     - If not found in PDFs, still answer using general knowledge,
       but clearly state it is not from the course documents.
+    - IF COURSE EXCERPTS contain relevant info, you MUST use them and cite the file name.
     """ 
     client = st.session_state.openai_client
     
@@ -216,7 +217,7 @@ if "Lab4_VectorDB" not in st.session_state:
         st.session_state.Lab4_VectorDB = build_lab4_vectordb()
 
 collection = st.session_state.Lab4_VectorDB
-#st.write("Docs in collection:", collection.count())
+st.write("Docs in collection:", collection.count())
 
 
 # 7. SIDEBAR: PART A TEST - toggle on/off --------------------------------------------
