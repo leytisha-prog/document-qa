@@ -24,7 +24,7 @@ CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"
 
 COLLECTION_NAME = "Lab4Collection"
 EMBED_MODEL = "text-embedding-3-small"
-CHAT_MODEL = "gpt-4.1-mini"  # change if your account has gpt-5-mini etc.
+CHAT_MODEL = "gpt-4.1-mini"  # change if my account has gpt-5-mini etc.
 
 
 # ----------------------------
@@ -32,7 +32,7 @@ CHAT_MODEL = "gpt-4.1-mini"  # change if your account has gpt-5-mini etc.
 # ----------------------------
 st.title("Lab 4: Course Information Chatbot (RAG)")
 
-# Helpful sanity check while developing (you can remove later)
+# Helpful sanity check while developing (I can remove later)
 st.caption(f"PDF folder: {PDF_FOLDER}")
 st.caption(f"PDFs found: {[p.name for p in PDF_FOLDER.glob('*.pdf')]}")
 
@@ -140,7 +140,7 @@ st.write("Docs in collection:", collection.count())
 
 
 # ----------------------------
-# PART A Test (remove later per instructions)
+# PART A Test (remove later per Chris' instructions)
 # ----------------------------
 st.subheader("Part A: VectorDB Test (remove for final submission)")
 test_query = st.text_input("Test search string", value="Generative AI")
@@ -149,7 +149,7 @@ if st.button("Run test search"):
     results = collection.query(
         query_embeddings=[q_emb],
         n_results=3,
-        include=["metadatas"]   # don't include ids to avoid Chroma version errors
+        include=["metadatas"]   # don't include ids to avoid Chroma version errors -- I have been having issues with this. 
     )
     metas = (results.get("metadatas") or [[]])[0]
     top_files = []
