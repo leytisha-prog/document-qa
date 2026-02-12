@@ -16,8 +16,10 @@ from PyPDF2 import PdfReader
 # This file lives in Labs/, build paths from repos root
 BASE_DIR = Path(__file__).resolve().parents[1]
 PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"    # Put 7 PDFs here
+
 st.write("PDF folder:", str(PDF_FOLDER))
 st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
+
 
 CHROMA_DIR = BASE_DIR / "ChromaDB_for_Lab"
 
@@ -31,6 +33,7 @@ st.title('Lab 4: Chatbot Using RAG')
 # 3. Create ChromaDB and client setup --------------------------
 chroma_client = chromadb.PersistentClient(path=str(CHROMA_DIR))
 collection = chroma_client.get_or_create_collection("Lab4Collection")
+st.write("Docs in collection:", collection.count())
 
 # Create OpenAI client 
 if 'openai_client' not in st.session_state:
