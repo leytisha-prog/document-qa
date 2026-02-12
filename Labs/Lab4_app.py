@@ -17,8 +17,8 @@ from PyPDF2 import PdfReader
 BASE_DIR = Path(__file__).resolve().parents[1]
 PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"    # Put 7 PDFs here
 
-#st.write("PDF folder:", str(PDF_FOLDER))
-#st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
+st.write("PDF folder:", str(PDF_FOLDER))
+st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
 
 
 CHROMA_DIR = BASE_DIR / "ChromaDB_for_Lab"
