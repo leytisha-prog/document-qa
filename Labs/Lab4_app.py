@@ -17,8 +17,8 @@ from PyPDF2 import PdfReader
 BASE_DIR = Path(__file__).resolve().parents[1]
 PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"    # Put 7 PDFs here
 
-st.write("PDF folder:", str(PDF_FOLDER))
-st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
+#st.write("PDF folder:", str(PDF_FOLDER))
+#st.write("PDFs found:", [p.name for p in PDF_FOLDER.glob("*.pdf")])
 
 
 CHROMA_DIR = BASE_DIR / "ChromaDB_for_Lab"
@@ -33,7 +33,7 @@ st.title('Lab 4: Chatbot Using RAG')
 # 3. Create ChromaDB and client setup --------------------------
 chroma_client = chromadb.PersistentClient(path=str(CHROMA_DIR))
 collection = chroma_client.get_or_create_collection("Lab4Collection")
-st.write("Docs in collection:", collection.count())
+#st.write("Docs in collection:", collection.count())
 
 # Create OpenAI client 
 if 'openai_client' not in st.session_state:
@@ -132,7 +132,7 @@ def build_lab4_vectordb():
         st.success(f"Loaded {loaded} PDFs into Chromaa.")
     return collection
 
-def retrieve_context(question: str, collection, k: int = 3):
+def retrieve_context(question: str, collection, k: int = 7):
     client = st.session_state.openai_client
     q_emb = client.embeddings.create(
         input=question,
@@ -215,7 +215,7 @@ if "Lab4_VectorDB" not in st.session_state:
         st.session_state.Lab4_VectorDB = build_lab4_vectordb()
 
 collection = st.session_state.Lab4_VectorDB
-st.write("Docs in collection:", collection.count())
+#st.write("Docs in collection:", collection.count())
 
 
 # 7. SIDEBAR: PART A TEST - toggle on/off --------------------------------------------
@@ -224,7 +224,7 @@ run_test = st.sidebar.checkbox("Run test search (Top 3 docs)", value=True)
 test_query = st.sidebar.text_input("Test search string", value="Generative AI")
 
 if run_test and test_query:
-    context, sources = retrieve_context(test_query, collection, k=3)
+    context, sources = retrieve_context(test_query, collection, k=7)
     st.sidebar.write("Top 3 returned documents:")
     for i, src in enumerate(sources, start=1):
         st.sidebar.write(f"{i}, {src}")
@@ -254,7 +254,7 @@ if user_q:
         st.write(user_q)
 
     with st.spinner("Retrieving course documents + generating answer..."):
-        context, sources = retrieve_context(user_q, collection, k=3)
+        context, sources = retrieve_context(user_q, collection, k=7)
         answer = answer_with_hybrid_rag(user_q, context)
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
