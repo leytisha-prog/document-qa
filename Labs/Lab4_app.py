@@ -115,7 +115,7 @@ def build_lab4_vectordb():
             )
             added += 1
         except Exception as e:
-            # Keep going so you don't end up with 0 PDFs loaded
+            # Continue so I don't end up with 0 PDFs loaded
             st.error(f"Failed to embed {pdf_file.name}: {e}")
             progress.progress(i / max(1, len(pdf_files)))
             continue
