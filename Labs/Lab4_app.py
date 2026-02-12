@@ -11,6 +11,7 @@ from openai import OpenAI
 import chromadb
 from pathlib import Path 
 from PyPDF2 import PdfReader
+import re
 
 
 # This file lives in Labs/, build paths from repos root
@@ -50,47 +51,29 @@ def safe_id_from_filename(pdf_file: Path) -> str:
     return pdf_file.stem.replace(" ", "_")
 
 
-def add_to_collection(collection, text: str, doc_id: str, source_name: str):
-    # Create an embedding 
-    client = st.session_state.openai_client
-    response = client.embeddings.create(
-        input=text,
-        model="text-embedding-3-small"
-    )
-
-    # Get the embedding 
-    embedding = response.data[0].embedding 
-
-    # Add embedding and document to ChromaDB
-    collection.add(
-        documents=[text],
-        ids=[doc_id],
-        embeddings=[embedding],
-        metadatas=[{"source": source_name}]
-    )
-
-
-#### ----- EXTRACT TEXT FROM PDF ------ ####
-# This function extracts text from each syllabus 
-# to pass to add_to_collection
-
 def extract_text_from_pdf(pdf_path: str) -> str:
     reader = PdfReader(pdf_path)
     pages_text = []
-
     for page in reader.pages:
         txt = page.extract_text()
         if txt:
             pages_text.append(txt)
-
-    # Join pages and lightly clean 
     return "\n".join(pages_text).strip()
-     
 
 
-#### ----- POPULATE COLLECTION WITH PDFs ------ ####
-# This function uses extract_text_from_pdf
-# and add_to_collection to put syllabi in ChromDB collection 
+def add_to_collection(collection, text: str, doc_id: str, source_name: str) -> None:
+    client = st.session_state.openai_client
+    emb = client.embeddings.create(
+        input=text,
+        model="text-embedding-3-small"
+    ).data[0].embedding
+
+    collection.add(
+        documents=[text],
+        ids=[doc_id],
+        embeddings=[emb],
+        metadatas=[{"source": source_name}] 
+    )
 
 
 def load_pdfs_to_collection(folder_path: Path, collection) -> int:
@@ -99,26 +82,20 @@ def load_pdfs_to_collection(folder_path: Path, collection) -> int:
 
     for pdf_file in pdf_files:
         text = extract_text_from_pdf(str(pdf_file))
-
-        # Skip empty PDFs
         if not text:
+            # If a PDF is scanned/image-only, PyPDF2 may extract nothing.
             continue
-        
-        # Define doc id
+
         doc_id = safe_id_from_filename(pdf_file)
 
-        # Skip if already exists
-        # Chroma will error if you add the same id again
         try:
             add_to_collection(collection, text, doc_id, pdf_file.name)
             added_count += 1
         except Exception:
-            # If it's already there or another add error, you can skip/log
-            # You can also st.write(...) if you want to see it in the UI
+            # Most common: doc_id already exists
             continue
-        
-    return added_count #put it outside the loop (Thanks TA!) 
 
+    return added_count # MUST be out of loop! Thanks TA!
 
 # 5 EXECUTION LOGIC HERE - Check if collection is empty and load PDFs ------------
 
@@ -129,7 +106,7 @@ def build_lab4_vectordb():
 
     if collection.count()== 0:
         loaded = load_pdfs_to_collection(PDF_FOLDER, collection)
-        st.success(f"Loaded {loaded} PDFs into Chromaa.")
+        st.success(f"Loaded {loaded} PDFs into ChromaDB.")
     return collection
 
 def retrieve_context(question: str, collection, k: int = 7):
