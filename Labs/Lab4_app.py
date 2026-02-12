@@ -14,7 +14,7 @@ from PyPDF2 import PdfReader
 
 
 # ----------------------------
-# Paths (PDFs are inside Labs/Lab-04-Data)
+# 3. Paths (PDFs are inside Labs/Lab-04-Data)
 # ----------------------------
 BASE_DIR = Path(__file__).resolve().parents[1]             # repo root
 PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"             # 7 PDFs live here
@@ -28,7 +28,7 @@ CHAT_MODEL = "gpt-4.1-mini"  # change if my account has gpt-5-mini etc.
 
 
 # ----------------------------
-# App UI
+# 4. App UI
 # ----------------------------
 st.title("Lab 4: Course Information Chatbot (RAG)")
 
@@ -42,7 +42,7 @@ if "openai_client" not in st.session_state:
 
 
 # ----------------------------
-# Helpers: PDF -> text, embedding with retry
+# 5. Helpers: PDF -> text, embedding with retry
 # ----------------------------
 def extract_text_from_pdf(pdf_path: str, max_pages: int = 6) -> str:
     """Read PDF and return text (cap pages to keep embedding fast)."""
@@ -142,24 +142,24 @@ st.write("Docs in collection:", collection.count())
 # ----------------------------
 # PART A Test (remove later per Chris' instructions)
 # ----------------------------
-st.subheader("Part A: VectorDB Test (remove for final submission)")
-test_query = st.text_input("Test search string", value="Generative AI")
-if st.button("Run test search"):
-    q_emb = embed_with_retry(test_query)
-    results = collection.query(
-        query_embeddings=[q_emb],
-        n_results=3,
-        include=["metadatas"]   # don't include ids to avoid Chroma version errors -- I have been having issues with this. 
+#st.subheader("Part A: VectorDB Test (remove for final submission)")
+#test_query = st.text_input("Test search string", value="Generative AI")
+#if st.button("Run test search"):
+    #q_emb = embed_with_retry(test_query)
+    #results = collection.query(
+        #query_embeddings=[q_emb],
+        #n_results=3,
+        #include=["metadatas"]   # don't include ids to avoid Chroma version errors -- I have been having issues with this. 
     )
-    metas = (results.get("metadatas") or [[]])[0]
-    top_files = []
-    for meta in metas:
-        meta = meta or {}
-        top_files.append(meta.get("source", "unknown"))
+    #metas = (results.get("metadatas") or [[]])[0]
+    #top_files = []
+    #for meta in metas:
+        #meta = meta or {}
+        #top_files.append(meta.get("source", "unknown"))
 
-    st.write("Top 3 returned documents:")
-    for i, f in enumerate(top_files, start=1):
-        st.write(f"{i}. {f}")
+    #st.write("Top 3 returned documents:")
+    #for i, f in enumerate(top_files, start=1):
+        #st.write(f"{i}. {f}")
 
 
 # ----------------------------
