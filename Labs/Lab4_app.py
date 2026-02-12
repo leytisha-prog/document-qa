@@ -142,24 +142,24 @@ st.write("Docs in collection:", collection.count())
 # ----------------------------
 # PART A Test (remove later per Chris' instructions)
 # ----------------------------
-st.subheader("Part A: VectorDB Test (remove for final submission)")
-test_query = st.text_input("Test search string", value="Generative AI")
-if st.button("Run test search"):
-    q_emb = embed_with_retry(test_query)
-    results = collection.query(
-        query_embeddings=[q_emb],
-        n_results=3,
-        include=["metadatas"]   # don't include ids to avoid Chroma version errors -- I have been having issues with this. 
-    )
-    metas = (results.get("metadatas") or [[]])[0]
-    top_files = []
-    for meta in metas:
-        meta = meta or {}
-        top_files.append(meta.get("source", "unknown"))
+#st.subheader("Part A: VectorDB Test (remove for final submission)")
+#test_query = st.text_input("Test search string", value="Generative AI")
+#if st.button("Run test search"):
+    #q_emb = embed_with_retry(test_query)
+    #results = collection.query(
+        #query_embeddings=[q_emb],
+        #n_results=3,
+        #include=["metadatas"]   # don't include ids to avoid Chroma version errors -- I have been having issues with this. 
+   #)
+    #metas = (results.get("metadatas") or [[]])[0]
+    #top_files = []
+    #for meta in metas:
+        #meta = meta or {}
+        #top_files.append(meta.get("source", "unknown"))
 
-    st.write("Top 3 returned documents:")
-    for i, f in enumerate(top_files, start=1):
-        st.write(f"{i}. {f}")
+    #st.write("Top 3 returned documents:")
+    #for i, f in enumerate(top_files, start=1):
+        #st.write(f"{i}. {f}")
 
 
 # ----------------------------
