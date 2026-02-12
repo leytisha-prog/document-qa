@@ -237,7 +237,7 @@ user_q = st.chat_input("Ask a question about the syllabi...")
 if user_q:
     st.session_state.messages.append({"role": "user", "content": user_q})
     with st.chat_message("user"):
-        st.wrte(user_q)
+        st.write(user_q)
 
     with st.spinner("Retrieving course documents + generating answer..."):
         context, sources = retrieve_context(user_q, collection, k=3)
