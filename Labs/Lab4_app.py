@@ -4,6 +4,8 @@ __import__("pysqlite3")
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 
 # 2. Imports
+import time
+import random 
 import re
 import streamlit as st
 from openai import OpenAI
@@ -14,8 +16,8 @@ from PyPDF2 import PdfReader
 
 # Paths
 BASE_DIR = Path(__file__).resolve().parents[1]
-PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"          # your actual folder
-CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"          # ✅ best for Streamlit Cloud
+PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"          # PDF folder
+CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"          
 
 st.title("Lab 4: Chatbot Using RAG")
 
@@ -46,17 +48,33 @@ def extract_text_from_pdf(pdf_path: str, max_pages: int = 6) -> str:
 
 def add_to_collection(collection, text: str, doc_id: str, source_name: str) -> None:
     client = st.session_state.openai_client
-    emb = client.embeddings.create(
-        input=text,
-        model="text-embedding-3-small"
-    ).data[0].embedding
 
-    collection.add(
-        documents=[text],
-        ids=[doc_id],
-        embeddings=[emb],
-        metadatas=[{"source": source_name}],
-    )
+    # Keep requests smaller & more reliable
+    text = text[:12000]  # cap characters sent to embeddings
+
+    max_retries = 5
+    for attempt in range(1, max_retries + 1):
+        try:
+            emb = client.embeddings.create(
+                input=text,
+                model="text-embedding-3-small"
+            ).data[0].embedding
+
+            collection.add(
+                documents=[text],
+                ids=[doc_id],
+                embeddings=[emb],
+                metadatas=[{"source": source_name}],
+            )
+            return  # success
+
+        except Exception as e:
+            # exponential backoff + jitter
+            if attempt == max_retries:
+                raise  # bubble up on final try
+            sleep_s = (2 ** attempt) + random.random()
+            time.sleep(sleep_s)
+
 
 
 def load_pdfs_to_collection(folder_path: Path, collection) -> int:
@@ -91,8 +109,7 @@ def load_pdfs_to_collection(folder_path: Path, collection) -> int:
             added_count += 1
         except Exception as e:
             st.error(f"Failed to add {pdf_file.name}: {e}")
-            # stop early so you see the real error
-            break
+            continue
 
         progress.progress(idx / max(1, len(pdf_files)))
 
@@ -151,7 +168,7 @@ def retrieve_context(question: str, collection, k: int = 7):
         src = meta.get("source", doc_id)
 
         sources.append(src)
-        blocks.append(f"[SOURCE: {src}]\n{docs[i]}")  # ✅ use docs[i], not docs[1]
+        blocks.append(f"[SOURCE: {src}]\n{docs[i]}")  # use docs[i], not docs[1]
 
     context = "\n\n---\n\n".join(blocks)
     context = context[:12000]  # cap prompt size
