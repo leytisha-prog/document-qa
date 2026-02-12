@@ -135,7 +135,7 @@ def retrieve_context(question: str, collection, k: int = 3):
     ).data[0].embedding
 
     results = collection.query(
-        queryembeddings=[q_emb],
+        query_embeddings=[q_emb],
         n_results=k,
         include=["documents", "metadatas", "ids"]
     )
