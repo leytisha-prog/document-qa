@@ -112,7 +112,7 @@ def load_pdfs_to_collection(folder_path: Path, collection) -> int:
             # You can also st.write(...) if you want to see it in the UI
             continue
         
-    return added_count #put it outside the loop (Thanks TA!)
+    return added_count #put it outside the loop (Thanks TA!) 
 
 
 # 5 EXECUTION LOGIC HERE - Check if collection is empty and load PDFs ------------
@@ -164,7 +164,7 @@ def answer_with_hybrid_rag(question: str, context: str):
     - If not found in PDFs, still answer using general knowledge,
       but clearly state it is not from the course documents.
     """ 
-    client = st.session_state.opneai_client
+    client = st.session_state.openai_client
 
     messages = [
         {
