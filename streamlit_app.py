@@ -27,10 +27,10 @@ Lab3_page = st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬")
 Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="📄") 
                 
 pg = st.navigation([
-    st.Page("Labs/Lab1_app.py", title="Lab 1"),
-    st.Page("Labs/Lab2_app.py", title="Lab 2"),
-    st.Page("Labs/Lab3_app.py", title="Lab 3"),
-    st.Page("Labs/Lab4_app.py", title="Lab 4", default=True), 
+    st.Page("Labs/Lab1_app.py", title="Lab 1", icon="📄"),
+    st.Page("Labs/Lab2_app.py", title="Lab 2", icon="🧪"),
+    st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬"),
+    st.Page("Labs/Lab4_app.py", title="Lab 4", icon="📄", default=True), 
 ])
 pg.run()
 
