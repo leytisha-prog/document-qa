@@ -15,7 +15,7 @@ from PyPDF2 import PdfReader
 
 # This file lives in Labs/, build paths from repos root
 BASE_DIR = Path(__file__).resolve().parents[1]
-PDF_FOLDER = BASE_DIR / "Lab-04-Data"    # Put 7 PDFs here
+PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"    # Put 7 PDFs here
 CHROMA_DIR = BASE_DIR / "ChromaDB_for_Lab"
 
 
@@ -169,7 +169,7 @@ def answer_with_hybrid_rag(question: str, context: str):
     # Prevents huge prompts, since PDFs are stored as full text
     MAX_CHARS = 12000
     context = (context or "") [:MAX_CHARS]
-    
+
     messages = [
         {
             "role": "system",
