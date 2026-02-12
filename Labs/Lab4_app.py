@@ -224,8 +224,8 @@ st.header("Course Information Chatbot (Hybrid RAG)")
 
 st.caption(
     "This chatbot retrieves relevant syllabus text (RAG)."
-    "If the answer is not in the PDFs, it will still answer using" 
-    "general knowledge and will say so."
+    "If the answer is not in the PDFs, it will still answer using general knowledge and will say so." 
+    
 )
 
 if "messages" not in st.session_state:
