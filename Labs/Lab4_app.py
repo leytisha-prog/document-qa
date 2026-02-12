@@ -137,8 +137,7 @@ def retrieve_context(question: str, collection, k: int = 7):
         indexed.append((priority, i))
     indexed.sort(key=lambda x: x[0])
 
-    blocks = []
-    sources = []
+    blocks, sources = [], []
 
     for _i, in indexed:
         meta = metas[i] if i < len(metas) and metas[i] else {}
