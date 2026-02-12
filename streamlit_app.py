@@ -1,32 +1,32 @@
 import streamlit as st
-from openai import OpenAI
 
-
-
-# Default parameters
-st.set_page_config(page_title="OpenAI Streamlit App", page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
-
-    # Configure global settings for the Streamlit app (must be called from the top)
+# ---------------------------------------------------
+# MUST be the FIRST Streamlit command in the file
+# ---------------------------------------------------
 st.set_page_config(
-        page_title="Leytisha's App",
-        page_icon="🤖",
-        layout="wide",
-        initial_sidebar_state="expanded",
-        menu_items={
-            'Get Help': 'https://www.example.com/help',
-            'Report a bug': 'https://www.example.com/bug',
-            'About': "This is a simple Streamlit app using OpenAI's API."
-        }
-    )
+    page_title="Leytisha's App",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-
-# Create pages for navigation
+# ---------------------------------------------------
+# Create pages
+# ---------------------------------------------------
 Lab1_page = st.Page("Labs/Lab1_app.py", title="Lab 1", icon="📄")
 Lab2_page = st.Page("Labs/Lab2_app.py", title="Lab 2", icon="🧪")
 Lab3_page = st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬")
-Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="📄") 
-                
 
-pg = st.navigation( [Lab1_page, Lab2_page, Lab3_page, Lab4_page])
-st.set_page_config(page_title="My Streamlit App", page_icon=':material/edit:')
-pg.run() 
+# ✅ Make Lab 4 the default
+Lab4_page = st.Page(
+    "Labs/Lab4_app.py",
+    title="Lab 4",
+    icon="🤖",
+    default=True
+)
+
+# ---------------------------------------------------
+# Navigation
+# ---------------------------------------------------
+pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page])
+pg.run()
