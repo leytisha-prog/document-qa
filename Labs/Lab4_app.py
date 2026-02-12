@@ -225,7 +225,7 @@ test_query = st.sidebar.text_input("Test search string", value="Generative AI")
 
 if run_test and test_query:
     context, sources = retrieve_context(test_query, collection, k=7)
-    # st.sidebar.write("Top 3 returned documents:")
+    #st.sidebar.write("Top 3 returned documents:")
     for i, src in enumerate(sources, start=1):
         st.sidebar.write(f"{i}, {src}")
 
