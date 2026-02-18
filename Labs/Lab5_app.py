@@ -5,6 +5,7 @@ location = "Syracuse, NY, USA"
 
 # FUNCTION to get current weather data
 api_key = st.secrets["weather_api_key"]
+Base_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 def get_current_weather(location, api_key, units="imperial"):
     url=(
