@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 # Location - City, State, Country
-location = "Syracuse, NY, USA"
+location = "City, State, Country"  # Replace with your desired location
 
 # FUNCTION to get current weather data
 api_key = st.secrets["WEATHER_API_KEY"] 
@@ -40,7 +40,7 @@ def get_current_weather(city_name):
     }
     
 st.title("Current Weather App")
-city = st.text_input("Enter a city name:", value="Syracuse")
+city = st.text_input("Enter a city name:")
 
 if st.button("Get Current Weather"):
     try:
