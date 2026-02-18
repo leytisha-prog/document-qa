@@ -47,14 +47,14 @@ if st.button("Get Current Weather"):
         try:
             weather_data = get_current_weather(city)
             st.write(f"Current weather in {weather_data['location']}:")
-            st.write(f"Temperature: {weather_data['temperature']}°C")
-            st.write(f"Feels Like: {weather_data['feels_like']}°C")
-            st.write(f"Min Temperature: {weather_data['temp_min']}°C")
-            st.write(f"Max Temperature: {weather_data['temp_max']}°C")
+            st.write(f"Temperature: {weather_data['temperature']}°C or {weather_data['temperature'] * 9/5 + 32:.2f}°F")
+            st.write(f"Feels Like: {weather_data['feels_like']}°C or {weather_data['feels_like'] * 9/5 + 32:.2f}°F")
+            st.write(f"Min Temperature: {weather_data['temp_min']}°C or {weather_data['temp_min'] * 9/5 + 32:.2f}°F")
+            st.write(f"Max Temperature: {weather_data['temp_max']}°C or {weather_data['temp_max'] * 9/5 + 32:.2f}°F")
             st.write(f"Humidity: {weather_data['humidity']}%")
             st.write(f"Weather Description: {weather_data['weather_description']}")
         except Exception as e:
             st.error(str(e))
     else:
         st.warning("Please enter a city name.")
-        
+
