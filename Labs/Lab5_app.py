@@ -7,13 +7,14 @@ location = "Syracuse, NY, USA"
 api_key = st.secrets["weather_api_key"]
 Base_URL = "https://api.openweathermap.org/data/2.5/weather"
 
-def get_current_weather(location, api_key, units="imperial"):
-    url=(
-        f'https://api.openweathermap.org/data/2.5/weather'
-        f'?q={location}&appid={api_key}&units={units}'
-    )
+def get_current_weather(city_name):
+    params = {
+        "q": city_name,
+        "appid": api_key,
+        "units": "metric", # or "imperial" for Fahrenheit
+    }
 
-    response = requests.get(url)
+    response = requests.get(Base_URL, params=params)
     if response.status_code == 401:
         raise Exception('Authentication failed. Invalid API key (401 unauthorized).')
     
