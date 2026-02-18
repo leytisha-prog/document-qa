@@ -59,7 +59,7 @@ if st.button("Get Weather"):
     st.success(f"Found location: {full_address} (Lat: {lat:.4f}, Lon: {lon:.4f})")
 
     try:
-        weather_data = fetch_current_weather(lat, lon, api_key, units_param)
+        weather_data = fetch_current_weather(lat, lon, api_key)
     except Exception as e: 
         st.error(f"Could not fetch weather data: {e}")
         st.stop()
@@ -82,4 +82,3 @@ if st.button("Get Weather"):
     folium.Marker([lat, lon], popup=weather_data["name"]).add_to(m)
     st_folium(m, width=700, height=500)
 
-    
