@@ -4,8 +4,8 @@ import requests
 location = "Syracuse, NY, USA"
 
 # FUNCTION to get current weather data
-api_key = "weather_api_key"
-Base_URL = "https://api.openweathermap.org/data/2.5/weather"
+api_key = st.secrets["WEATHER_API_KEY"]
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 def get_current_weather(city_name):
     params = {
@@ -14,7 +14,7 @@ def get_current_weather(city_name):
         "units": "metric", # or "imperial" for Fahrenheit
     }
 
-    response = requests.get(Base_URL, params=params)
+    response = requests.get(BASE_URL, params=params)
     if response.status_code == 401:
         raise Exception('Authentication failed. Invalid API key (401 unauthorized).')
     
@@ -44,8 +44,8 @@ city = st.text_input("Enter a city name:", value="Syracuse")
 
 if st.button("Get Current Weather"):
     try:
-        api_key = st.secrets["weather_api_key"]
-        weather_data = get_current_weather(city, api_key)
+        api_key = st.secrets["WEATHER_API_KEY"]
+        weather_data = get_current_weather(city)
         st.write(f"Current Weather in {weather_data['location']}:")
         st.write(f"Temperature: {weather_data['temperature']}°C or {round(weather_data['temperature'] * 9/5 + 32, 2)}°F")
         st.write(f"Feels Like: {weather_data['feels_like']}°C or {round(weather_data['feels_like'] * 9/5 + 32, 2)}°F")
