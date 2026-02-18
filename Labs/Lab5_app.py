@@ -35,7 +35,7 @@ def get_current_weather(lat, lon, api_key):
 
 def get_location_coords(city_name):
     """Converts a city name to latitude and longitude using geopy."""
-    geolocator = Nominatim(user_agent="weather_app_integrator")
+    geolocator = Nominatim(user_agent="Current_Weather_App")
     location = geolocator.geocode(city_name)
     if location:
         return location.latitude, location.longitude
