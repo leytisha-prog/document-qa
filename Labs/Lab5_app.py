@@ -44,11 +44,17 @@ city = st.text_input("Enter a city name:")
 
 if st.button("Get Current Weather"):
     if city:
-        get_current_weather = get_current_weather(city)
-        if get_current_weather:
-            main_data = get_current_weather['main']
-            st.success(f"Current weather in {city}: {main_data['temp']}°C, {main_data['weather_description']}")
-        else:
-            st.error("Could not retrieve weather data. Please check the city name and try again.")
+        try:
+            weather_data = get_current_weather(city)
+            st.write(f"Current weather in {weather_data['location']}:")
+            st.write(f"Temperature: {weather_data['temperature']}°C")
+            st.write(f"Feels Like: {weather_data['feels_like']}°C")
+            st.write(f"Min Temperature: {weather_data['temp_min']}°C")
+            st.write(f"Max Temperature: {weather_data['temp_max']}°C")
+            st.write(f"Humidity: {weather_data['humidity']}%")
+            st.write(f"Weather Description: {weather_data['weather_description']}")
+        except Exception as e:
+            st.error(str(e))
     else:
-        st.warning("Please enter a city name to get the current weather.")
+        st.warning("Please enter a city name.")
+        
