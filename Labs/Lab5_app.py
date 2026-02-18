@@ -25,13 +25,16 @@ api_key = st.secrets["WEATHER_API_KEY"]
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 def get_current_weather(lat, lon, api_key):
-    """Fetches current weather data from OpenWeatherMap API."""
-    url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={api_key}&units=metric"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
+    url = "https://api.openweathermap.org/data/2.5/weather"
+    params = {
+        "lat": lat,
+        "lon": lon,
+        "appid": api_key,
+        "units": "imperial" # or "metric" for Celsius 
+    }
+    response = requests.get(url, params=params, timeout=15)
+    response.raise_for_status() # Raise an exception for HTTP errors
+    return response.json() 
 
 def get_location_coords(city_name):
     """Converts a city name to latitude and longitude using geopy."""
