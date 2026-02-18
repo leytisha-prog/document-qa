@@ -1,3 +1,4 @@
+import streamlit as st
 import requests
 # Location - City, State, Country
 location = "Syracuse, NY, USA"
@@ -35,3 +36,25 @@ def get_current_weather(location, api_key, units="imperial"):
             'weather_description': weather_description
     }
     
+st.title("Current Weather App")
+city = st.text_input("Enter a city name:", value="Syracuse")
+
+if st.button("Get Current Weather"):
+    try:
+        api_key = st.secrets["weather_api_key"]
+        weather_data = get_current_weather(city, api_key)
+        st.write(f"Current Weather in {weather_data['location']}:")
+        st.write(f"Temperature: {weather_data['temperature']}°C or {round(weather_data['temperature'] * 9/5 + 32, 2)}°F")
+        st.write(f"Feels Like: {weather_data['feels_like']}°C or {round(weather_data['feels_like'] * 9/5 + 32, 2)}°F")
+        st.write(f"Min Temperature: {weather_data['temp_min']}°C or {round(weather_data['temp_min'] * 9/5 + 32, 2)}°F")
+        st.write(f"Max Temperature: {weather_data['temp_max']}°C or {round(weather_data['temp_max'] * 9/5 + 32, 2)}°F")
+        st.write(f"Humidity: {weather_data['humidity']}%")
+        st.write(f"Weather Description: {weather_data['weather_description']}")
+    except Exception as e:
+        st.error(f"Error fetching weather data: {e}")
+
+    else:
+        st.error("Please enter a city name to get the current weather.")
+        
+else:
+    st.warning("API error: refresh the page and try again.")
