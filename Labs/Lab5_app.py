@@ -6,6 +6,17 @@ import folium
 from geopy.geocoders import Nominatim   
 
 
+geolocator = Nominatim(user_agent="Current_Weather_App")
+# Geocode an address
+address = "107 College Pl, Syracuse, NY"  # Example address
+location = geolocator.geocode(address)
+
+if location:
+    print(f"Address: {location.address}")
+    print(f"Latitude: {location.latitude}, Longitude: {location.longitude}")
+else:
+    print("Location not found.")
+
 # Location - City, State, Country
 location = "City, State, Country"  # Replace with your desired location
 
