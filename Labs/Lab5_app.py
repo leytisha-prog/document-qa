@@ -54,10 +54,6 @@ if st.button("Get Current Weather"):
         st.write(f"Humidity: {weather_data['humidity']}%")
         st.write(f"Weather Description: {weather_data['weather_description']}")
     except Exception as e:
-        st.error(f"Error fetching weather data: {e}")
-
-    else:
-        st.error("Please enter a city name to get the current weather.")
-        
+        st.error(f"Error fetching weather data: {e}")     
 else:
     st.warning("API error: refresh the page and try again.")
