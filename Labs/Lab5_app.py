@@ -43,18 +43,14 @@ st.title("Current Weather App")
 city = st.text_input("Enter a city name:")
 
 if st.button("Get Current Weather"):
-    try:
-        api_key = st.secrets["WEATHER_API_KEY"]
-        weather_data = get_current_weather(city)
-        st.write(f"Current Weather in {weather_data['location']}:")
-        st.write(f"Temperature: {weather_data['temperature']}°C or {round(weather_data['temperature'] * 9/5 + 32, 2)}°F")
-        st.write(f"Feels Like: {weather_data['feels_like']}°C or {round(weather_data['feels_like'] * 9/5 + 32, 2)}°F")
-        st.write(f"Min Temperature: {weather_data['temp_min']}°C or {round(weather_data['temp_min'] * 9/5 + 32, 2)}°F")
-        st.write(f"Max Temperature: {weather_data['temp_max']}°C or {round(weather_data['temp_max'] * 9/5 + 32, 2)}°F")
-        st.write(f"Humidity: {weather_data['humidity']}%")
-        st.write(f"Weather Description: {weather_data['weather_description']}")
-    except Exception as e:
-        st.error(f"Error fetching weather data: {e}")     
-        
-    else: 
-        st.error("Please enter a city name to get the current weather.")     
+    if city:
+        get_current_weather = get_current_weather(city)
+        st.write(f"Current weather in {get_current_weather['location']}:")
+        st.write(f"Temperature: {get_current_weather['temperature']}°C")
+        st.write(f"Feels Like: {get_current_weather['feels_like']}°C")
+        st.write(f"Min Temperature: {get_current_weather['temp_min']}°C")
+        st.write(f"Max Temperature: {get_current_weather['temp_max']}°C")
+        st.write(f"Humidity: {get_current_weather['humidity']}%")
+        st.write(f"Weather Description: {get_current_weather['weather_description']}")
+    else:
+        st.error("Please enter a city name to get the current weather.")    
