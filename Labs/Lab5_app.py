@@ -24,6 +24,26 @@ location = "City, State, Country"  # Replace with your desired location
 api_key = st.secrets["WEATHER_API_KEY"] 
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
+def get_current_weather(lat, lon, api_key):
+    """Fetches current weather data from OpenWeatherMap API."""
+    url = f"{BASE_URL}?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+def get_location_coords(city_name):
+    """Converts a city name to latitude and longitude using geopy."""
+    geolocator = Nominatim(user_agent="weather_app_integrator")
+    location = geolocator.geocode(city_name)
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None, None
+
+
+
 def get_current_weather(city_name):
     params = {
         "q": city_name,
@@ -59,19 +79,33 @@ def get_current_weather(city_name):
 st.title("Current Weather App")
 city = st.text_input("Enter a city name:")
 
-if st.button("Get Current Weather"):
+if st.button("Get Weather"):
     if city:
-        try:
-            weather_data = get_current_weather(city)
-            st.write(f"Current weather in {weather_data['location']}:")
-            st.write(f"Temperature: {weather_data['temperature']}°C or {weather_data['temperature'] * 9/5 + 32:.2f}°F")
-            st.write(f"Feels Like: {weather_data['feels_like']}°C or {weather_data['feels_like'] * 9/5 + 32:.2f}°F")
-            st.write(f"Min Temperature: {weather_data['temp_min']}°C or {weather_data['temp_min'] * 9/5 + 32:.2f}°F")
-            st.write(f"Max Temperature: {weather_data['temp_max']}°C or {weather_data['temp_max'] * 9/5 + 32:.2f}°F")
-            st.write(f"Humidity: {weather_data['humidity']}%")
-            st.write(f"Weather Description: {weather_data['weather_description']}")
-        except Exception as e:
-            st.error(str(e))
+        lat, lon = get_location_coords(city)
+        
+        if lat is not None and lon is not None:
+            st.success(f"Found location: {city} (Lat: {lat}, Lon: {lon})")
+            
+            # 1. Fetch weather data
+            weather_data = get_current_weather(lat, lon, api_key)
+            
+            if weather_data:
+                # 2. Display weather data
+                st.subheader(f"Current Weather in {weather_data['name']}")
+                col1, col2, col3 = st.columns(3)
+                col1.metric("Temperature", f"{weather_data['main']['temp']}°C", )
+                col2.metric("Humidity", f"{weather_data['main']['humidity']}%")
+                col3.metric("Condition", weather_data['weather'][0]['description'].capitalize())
+                
+                # 3. Display map using streamlit-folium for better interactivity/control
+                st.subheader("Location Map")
+                m = folium.Map(location=[lat, lon], zoom_start=12)
+                folium.Marker([lat, lon], popup=f"{weather_data['name']}").add_to(m)
+                st_folium(m, width=700, height=500)
+                
+            else:
+                st.error("Could not fetch weather data. Check your API key or try again.")
+        else:
+            st.error("Could not find the city. Please check the name and try again.")
     else:
         st.warning("Please enter a city name.")
-
