@@ -4,6 +4,7 @@ import requests
 location = "Syracuse, NY, USA"
 
 # FUNCTION to get current weather data
+api_key = st.secrets["weather_api_key"]
 
 def get_current_weather(location, api_key, units="imperial"):
     url=(
