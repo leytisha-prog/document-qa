@@ -64,7 +64,9 @@ if st.button("Get Weather"):
         st.error(f"Could not fetch weather data: {e}")
         st.stop()
 
-    # -------- Display weather data 
+# -------- Display weather data 
+if st.button("Show Weather Data"):
+
     st.subheader(f"Current Weather: {weather_data['name']}")
 
     temp = weather_data["main"]["temp"]
