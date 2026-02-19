@@ -192,21 +192,24 @@ if run:
     st.session_state.wear_advice = advice
     st.session_state.wear_weather = weather 
 
-st.divider()
+
 
 # ------- Display the advice and weather info - as well as map
-with st.container(border=True):
+col1, col2, = st.columns(2)
+
+with col1:
     if st.session_state.wear_advice:
         st.subheader("Advice and Weather Information")
         st.write(st.session_state.wear_advice)
 
+with col2:
     if st.session_state.wear_weather:
         weather = st.session_state.wear_weather
 
         st.subheader("Weather Listed Details")
         
         st.json(weather)
-        
+      
         st.subheader("Map")
         m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
         folium.Marker(
