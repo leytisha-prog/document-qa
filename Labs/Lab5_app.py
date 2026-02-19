@@ -196,7 +196,7 @@ if run:
 # ------- Display the advice and weather info - as well as map
 if st.session_state.wear_advice:
     st.subheader("Advice and Weather Information")
-    st.write(advice)
+    st.write(st.session_state.wear_advice)
 
 if st.session_state.wear_weather:
     weather = st.session_state.wear_weather
