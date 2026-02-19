@@ -24,6 +24,12 @@ unit = st.sidebar.selectbox("Units", ["imperial (°F)", "metric (°C)"], index=0
 units_param = "imperial" if unit.startswith("imperial") else "metric"
 temp_symbol = "°F" if units_param == "imperial" else "°C"
 
+# ---- Fixes the flash then disappear behavior 
+if "wear_advice" not in st.session_state:
+    st.session_state.wear_advice = None
+
+if "wear_weather" not in st.session_state:
+    st.session_state.wear_weather = None
 
 # -------- Weather TOOL Function - used by LLM to get weather data
 def get_weather(location: str) -> dict:
@@ -182,23 +188,33 @@ if run:
         # Model answered without using tool - just show the answer
         advice = message.content
 
-    # ------- Display the advice and weather info - as well as map
+    # ----- prevents disappearing of results
+    st.session_state.wear_advice = advice
+    st.session_state.wear_weather = weather 
+
+
+
+# ------- Display the advice and weather info - as well as map
+if st.session_state.wear_advice:
     st.subheader("Advice and Weather Information")
     st.write(advice)
 
-    if weather:
-        st.subheader("Weather used (tool result)")
-        st.json(weather)
+if st.session_state.wear_weather:
+    weather = st.session_state.wear_weather
 
-        # Map visualization
-        st.subheader("Map")
-        m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
-        folium.Marker(
-            [weather["lat"], weather["lon"]],
-            popup=weather["location_resolved"],
-            tooltip=weather["location_resolved"],
-        ).add_to(m)
-        st_folium(m, width=800, height=450)
+    st.subheader("Weather used (tool result)")
+    st.json(weather)
+
+    st.subheader("Map")
+    m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
+    folium.Marker(
+        [weather["lat"], weather["lon"]],
+        popup=weather.get("location_resolved", "Location"),
+        tooltip=weather.get("location_resolved", "Location"),
+    ).add_to(m)
+    st_folium(m, width=800, height=450)
+else:
+    st.info("Enter a city and click **Get clothing and activity suggestions**.")
         
 
 
