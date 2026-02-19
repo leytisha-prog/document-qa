@@ -77,28 +77,15 @@ lat = None
 lon = None
 full_address = None 
 
-st.write("DEBUG: weather_data exists?", "weather_data" in globals())
-st.write("DEBUG: weather_data value:", weather_data if "weather_data" in globals() else "MISSING")
-
 if weather_data:
-    
-    st.subheader(f"Current Weather: {weather_data['name']}")
+    st.subheader(f"Current Weather in {full_address}")
+    st.write(f"Temperature: {weather_data['main']['temp']} {temp_symbol}")
+    st.write(f"Weather: {weather_data['weather'][0]['description'].title()}")
+    st.write(f"Humidity: {weather_data['main']['humidity']}%")
 
-    temp = weather_data["main"]["temp"]
-    humidity = weather_data["main"]["humidity"]
-    desc = weather_data["weather"][0]["description"].capitalize()
+    # Create a map centered on the location
+    m = folium.Map(location=[lat, lon], zoom_start=10)
+    folium.Marker([lat, lon], tooltip=full_address).add_to(m)
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Temperature", f"{temp}{temp_symbol}")
-    col2.metric("Humidity", f"{humidity}%")
-    col3.metric("Condition", desc)
-
-    # Map
-    st.subheader("Location Map")
-    m = folium.Map(location=[lat, lon], zoom_start=12)
-    folium.Marker([lat, lon], popup=weather_data["name"]).add_to(m)
+    # Display the map in Streamlit
     st_folium(m, width=700, height=500)
-
-
-
-
