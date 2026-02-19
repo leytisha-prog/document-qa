@@ -74,8 +74,9 @@ if st.button("Get Weather"):
 
 
 
-if weather_data:
 
+if weather_data:
+    
     weather_data = None
     lat = None
     lon = None
