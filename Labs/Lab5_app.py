@@ -193,7 +193,6 @@ if run:
     st.session_state.wear_weather = weather 
 
 
-
 # ------- Display the advice and weather info - as well as map
 if st.session_state.wear_advice:
     st.subheader("Advice and Weather Information")
