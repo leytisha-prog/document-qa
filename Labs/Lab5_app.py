@@ -201,14 +201,10 @@ if st.session_state.wear_advice:
 
 if st.session_state.wear_weather:
     weather = st.session_state.wear_weather
-    
-    st.divider()
 
     st.subheader("Weather Details", icon="🌤️", text_alignment= "center")    
     st.json(weather)
     
-    st.divider()
-
     st.subheader("Map", icon="🗺️", text_alignment= "center")
     m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
     folium.Marker(
