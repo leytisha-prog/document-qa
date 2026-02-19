@@ -10,7 +10,7 @@ import folium
 
 # ---- Configuration 
 st.set_page_config(page_title="Lab 5", page_icon="🧣", layout="wide")  
-st.title("Lab 5 --> What to Wear Bot 🧣🌦🧥")
+st.title("Lab 5: What to Wear Bot 🧣🌦🧥")
 st.write("Enter a city and I'll tell you what to wear based on the current weather conditions!")
 
 OPENAI_API_KEY = st.secrets["OPEN_AI_KEY"] # It's already set in Streamlit app settings
@@ -59,7 +59,7 @@ def get_weather(location: str) -> dict:
     weather_response.raise_for_status()
     data = weather_response.json()
 
-    # ----- Extract lat/lon from the response (so you can still show the map)
+    # ----- Extract lat/lon from the response (show the map)
     lat = data["coord"]["lat"]
     lon = data["coord"]["lon"]
 
