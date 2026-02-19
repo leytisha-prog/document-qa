@@ -192,10 +192,12 @@ if run:
     st.session_state.wear_advice = advice
     st.session_state.wear_weather = weather 
 
-
+st.divider()
 
 # ------- Display the advice and weather info - as well as map
-col1, col2, = st.columns(2)
+
+with st.container(border=True):
+    col1, col2 = st.columns(2)
 
 with col1:
     if st.session_state.wear_advice:
