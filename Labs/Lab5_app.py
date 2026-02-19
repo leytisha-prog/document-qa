@@ -57,6 +57,8 @@ if st.button("Get Weather"):
         st.error()
 
     st.success(f"Found location: {full_address} (Lat: {lat:.4f}, Lon: {lon:.4f})")
+    
+    weather_data = None
 
     try:
         weather_data = fetch_current_weather(lat, lon, api_key)
@@ -65,6 +67,7 @@ if st.button("Get Weather"):
         st.stop()
 
 # -------- Display weather data 
+
 if weather_data:
     
     st.subheader(f"Current Weather: {weather_data['name']}")
