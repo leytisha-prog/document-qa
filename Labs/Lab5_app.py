@@ -37,7 +37,7 @@ def get_weather(location: str) -> dict:
     if not location or not location.strip():
         location = "Syracuse, NY" # if none is provided, default to Syracuse, NY
     # Step 1: Geocoding API to get lat/lon
-    geocode_url = f"https://api.openweathermap.org/geo/1.0/direct"
+    geocode_url = "https://api.openweathermap.org/geo/1.0/direct"
     geocode_params = {
         "q": location,
         "limit": 1,
@@ -62,7 +62,7 @@ def get_weather(location: str) -> dict:
     location_resolved = ", ".join([p for p in [name, state, country] if p]).strip()
 
     # Step 2: Current Weather API to get weather details - by lat/lon
-    weather_url = f"https://api.openweathermap.org/data/2.5/weather"
+    weather_url = "https://api.openweathermap.org/data/2.5/weather"
     weather_params = {"lat": lat, "lon": lon, "appid": WEATHER_API_KEY, "units": units_param}
     weather_response = requests.get(weather_url, params=weather_params, timeout=15)
 
