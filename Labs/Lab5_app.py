@@ -95,8 +95,7 @@ if weather_data:
     m = folium.Map(location=[lat, lon], zoom_start=12)
     folium.Marker([lat, lon], popup=weather_data["name"]).add_to(m)
     st_folium(m, width=700, height=500)
-else:
-    st.info("Enter a city and click **Get Weather**.")
+
 
 
 
