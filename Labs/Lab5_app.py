@@ -106,7 +106,7 @@ if run:
     # 6. user inputs city; bot outputs advice (not chat)
     user_location = city.strip() if city else ""
 
-    # First call - let the model decides if it needs weather (too_choice='auto')
+    # First call - let the model decides if it needs weather (tool_choice='auto')
     messages = [
         {
             "role": "system",
