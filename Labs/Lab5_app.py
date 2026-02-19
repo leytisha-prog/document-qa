@@ -99,8 +99,8 @@ tools = [
 
 
 # ------- UI - Not a Chabot 
-city = st.text_input("City (e.g., Syracuse, NY or Kingstown, St. Vincent and the Grenadines)", placeholder="Syracuse, NY")
-run = st.button("Get clothing and activity suggestions")
+city = st.text_input("City (e.g., Syracuse, NY, or Kingstown, St. Vincent and the Grenadines)", placeholder="Syracuse, NY")
+run = st.button("Get clothing and activity suggestions", type="primary")
 
 if run:
     # 6. user inputs city; bot outputs advice (not chat)
