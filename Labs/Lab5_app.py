@@ -28,63 +28,46 @@ temp_symbol = "°F" if units_param == "imperial" else "°C"
 # -------- Weather TOOL Function - used by LLM to get weather data
 def get_weather(location: str) -> dict:
     """
-    Tool function for OpenAI tool-calling 
-    - If location is missing, default to 'Syracuse, NY' (lab requirement)
-    - Uses OpenWeather Geocoding API to get lat/lon for the location
-    - Uses OpenWeather Current Weather API -> weather details
-    - Returns compact JSON including lat/lon for map rendering.
-    """ 
+    Tool function for OpenAI tool-calling.
+    - If location is missing, default to 'Syracuse, NY' (lab requirement).
+    - Uses OpenWeather Current Weather API with q=location (more reliable than geo endpoint),
+      then extracts lat/lon from the weather JSON for map rendering.
+    """
     if not location or not location.strip():
-        location = "Syracuse, NY" # if none is provided, default to Syracuse, NY
-    # Step 1: Geocoding API to get lat/lon
-    geocode_url = "https://api.openweathermap.org/geo/1.0/direct"
-    geocode_params = {
-        "q": location,
-        "limit": 1,
-        "appid": WEATHER_API_KEY
-    }
-    geocode_response = requests.get(geocode_url, params=geocode_params, timeout=15)
-    st.write("Geocode status:", geocode_response.status_code)
-    st.write("Geocode raw response:", geocode_response.text)
+        location = "Syracuse, NY"
 
-    geocode_response.raise_for_status()
-    geo = geocode_response.json()
-
-    if not geo:
-        return {"error": f"Could not geocode location: {location}", "location_requested": location}
-    
-    lat = geo[0] ["lat"]
-    lon = geo[0] ["lon"]    
-    name = geo[0].get("name", location)
-    state = geo[0].get("state", "")
-    country = geo[0].get("country", "")
-
-    location_resolved = ", ".join([p for p in [name, state, country] if p]).strip()
-
-    # Step 2: Current Weather API to get weather details - by lat/lon
     weather_url = "https://api.openweathermap.org/data/2.5/weather"
-    weather_params = {"lat": lat, "lon": lon, "appid": WEATHER_API_KEY, "units": units_param}
+    weather_params = {
+        "q": location,
+        "appid": WEATHER_API_KEY,
+        "units": units_param
+    }
+
     weather_response = requests.get(weather_url, params=weather_params, timeout=15)
 
-    # Error message if things go wrong 
     if weather_response.status_code == 401:
-        return{"error": "401 Unauthorized - invalid API key."}
-    weather_response.raise_for_status()
+        return {"error": "401 Unauthorized - invalid API key."}
+    if weather_response.status_code == 404:
+        return {"error": f"Location not found: {location}"}
 
+    weather_response.raise_for_status()
     data = weather_response.json()
 
-    return{
+    # ----- Extract lat/lon from the response (so you can still show the map)
+    lat = data["coord"]["lat"]
+    lon = data["coord"]["lon"]
+
+    return {
         "location_requested": location,
-        "location_resolved": location_resolved,
+        "location_resolved": data.get("name", location),
         "lat": lat,
         "lon": lon,
         "units": units_param,
         "temperature": data["main"]["temp"],
         "feels_like": data["main"]["feels_like"],
         "humidity": data["main"]["humidity"],
-        "wind_speed": data.get["wind", {}].get("speed"), 
+        "wind_speed": data.get("wind", {}).get("speed"),  
         "conditions": data["weather"][0]["description"],
-
     }
 
 # ------- OpenAI Tool Definition
@@ -122,7 +105,7 @@ if run:
         {
             "role": "system",
             "content": (
-                "You are a 'What to Wear Bot' assistant."
+                "You are a 'What to Wear Bot' assistant. You MUST call the get_weather tool when giving advice."
                  "If you need current weather to answer, call the get_weather tool."
                  "Provide clothing details suggestions based on the weather conditions, temperature, and user preferences."
             ),
