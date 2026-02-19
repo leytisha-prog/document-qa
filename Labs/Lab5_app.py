@@ -72,15 +72,15 @@ if st.button("Get Weather"):
 
 # -------- Display weather data 
 
+weather_data = None
+lat = None
+lon = None
+full_address = None 
 
-
+st.write("DEBUG: weather_data exists?", "weather_data" in globals())
+st.write("DEBUG: weather_data value:", weather_data if "weather_data" in globals() else "MISSING")
 
 if weather_data:
-    
-    weather_data = None
-    lat = None
-    lon = None
-    full_address = None 
     
     st.subheader(f"Current Weather: {weather_data['name']}")
 
