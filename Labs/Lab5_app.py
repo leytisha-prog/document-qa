@@ -44,6 +44,9 @@ def get_weather(location: str) -> dict:
         "appid": WEATHER_API_KEY
     }
     geocode_response = requests.get(geocode_url, params=geocode_params, timeout=15)
+    st.write("Geocode status:", geocode_response.status_code)
+    st.write("Geocode raw response:", geocode_response.text)
+
     geocode_response.raise_for_status()
     geo = geocode_response.json()
 
