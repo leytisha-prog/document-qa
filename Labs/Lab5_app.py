@@ -196,13 +196,16 @@ st.divider()
 
 # ------- Display the advice and weather info - as well as map
 if st.session_state.wear_advice:
-    st.subheader("Advice and Weather Information", icon="👗", text_alignment= "center")
+    st.subheader("Advice and Weather Information")
     st.write(st.session_state.wear_advice)
+
+st.divider() 
 
 if st.session_state.wear_weather:
     weather = st.session_state.wear_weather
 
-    st.subheader("Weather Details", icon="🌤️", text_alignment= "center")    
+    st.subheader("Weather Listed Details")
+    
     st.json(weather)
     
     st.subheader("Map", icon="🗺️", text_alignment= "center")
