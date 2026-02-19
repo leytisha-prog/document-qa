@@ -99,8 +99,8 @@ tools = [
 
 
 # ------- UI - Not a Chabot 
-city = st.text_input("City (e.g., Syracuse, NY, or Kingstown, St. Vincent and the Grenadines)", placeholder="Syracuse, NY")
-run = st.button("Get clothing and activity suggestions", type="primary")
+city = st.text_input("City (e.g., Syracuse, NY, USA,  or  Kingstown, St. Vincent and the Grenadines)", placeholder="Syracuse, NY")
+run = st.button("Get clothing and activity suggestions", type="tertiary")
 
 if run:
     # 6. user inputs city; bot outputs advice (not chat)
@@ -192,6 +192,7 @@ if run:
     st.session_state.wear_advice = advice
     st.session_state.wear_weather = weather 
 
+st.divider()
 
 # ------- Display the advice and weather info - as well as map
 if st.session_state.wear_advice:
