@@ -13,7 +13,7 @@ st.set_page_config(page_title="Lab 5", page_icon="🧣", layout="wide")
 st.title("Lab 5 --> What to Wear Bot 🧣🌦🧥")
 st.write("Enter a city and I'll tell you what to wear based on the current weather conditions!")
 
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"] # It's already set in Streamlit app settings
+OPENAI_API_KEY = st.secrets["OPEN_AI_KEY"] # It's already set in Streamlit app settings
 WEATHER_API_KEY = st.secrets["WEATHER_API_KEY"] # This also set in Streamlit app settings 
 
 client = OpenAI(api_key=OPENAI_API_KEY)
