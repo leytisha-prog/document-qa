@@ -17,6 +17,9 @@ unit = st.sidebar.selectbox("Units", ["imperial (°F)", "metric (°C)"])
 units_param = "imperial" if unit.startswith("imperial") else "metric"
 temp_symbol = "°F" if units_param == "imperial" else "°C"
 
+Weather_data = None
+lat, lon, full_address = None, None, None
+
 # -------- Helper functions 
 def get_location_coords(city_name):
     """Converts a city name to latitude and longitude using geopy."""
@@ -38,9 +41,10 @@ def fetch_current_weather(lat, lon, api_key):
         raise Exception("401 Unauthorized: Invalid API key.")
     if response.status_code == 404:
         raise Exception("404 Not Found: location not found by API.")
+    
     response.raise_for_status()
-
     return response.json()
+
 
 # ----------- UI 
 city = st.text_input("Enter a city name (e.g., 'Syracuse, NY'):")
@@ -86,4 +90,8 @@ if weather_data:
     m = folium.Map(location=[lat, lon], zoom_start=12)
     folium.Marker([lat, lon], popup=weather_data["name"]).add_to(m)
     st_folium(m, width=700, height=500)
+else:
+    st.info("Enter a city and click **Get Weather**.")
+
+
 
