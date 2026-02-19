@@ -99,7 +99,7 @@ tools = [
 
 
 # ------- UI - Not a Chabot 
-city = st.text_input("City (e.g., Syracuse, NY)", placeholder="Syracuse, NY")
+city = st.text_input("City (e.g., Syracuse, NY or Kingstown, St. Vincent and the Grenadines)", placeholder="Syracuse, NY")
 run = st.button("Get clothing and activity suggestions")
 
 if run:
