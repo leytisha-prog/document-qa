@@ -195,29 +195,28 @@ if run:
 st.divider()
 
 # ------- Display the advice and weather info - as well as map
-if st.session_state.wear_advice:
-    st.subheader("Advice and Weather Information")
-    st.write(st.session_state.wear_advice)
+with st.container(border=True):
+    if st.session_state.wear_advice:
+        st.subheader("Advice and Weather Information")
+        st.write(st.session_state.wear_advice)
 
-st.divider() 
+    if st.session_state.wear_weather:
+        weather = st.session_state.wear_weather
 
-if st.session_state.wear_weather:
-    weather = st.session_state.wear_weather
-
-    st.subheader("Weather Listed Details")
-    
-    st.json(weather)
-    
-    st.subheader("Map", icon="🗺️", text_alignment= "center")
-    m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
-    folium.Marker(
-        [weather["lat"], weather["lon"]],
-        popup=weather.get("location_resolved", "Location"),
-        tooltip=weather.get("location_resolved", "Location"),
-    ).add_to(m)
-    st_folium(m, width=800, height=450)
-else:
-    st.info("Enter a city and click **Get clothing and activity suggestions**.")
+        st.subheader("Weather Listed Details")
         
+        st.json(weather)
+        
+        st.subheader("Map")
+        m = folium.Map(location=[weather["lat"], weather["lon"]], zoom_start=11)
+        folium.Marker(
+            [weather["lat"], weather["lon"]],
+            popup=weather.get("location_resolved", "Location"),
+            tooltip=weather.get("location_resolved", "Location"),
+        ).add_to(m)
+        st_folium(m, width=800, height=450)
+    else:
+        st.info("Enter a city and click **Get clothing and activity suggestions**.")
+            
 
 
