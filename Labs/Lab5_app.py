@@ -37,7 +37,7 @@ def get_weather(location: str) -> dict:
     if not location or not location.strip():
         location = "Syracuse, NY" # if none is provided, default to Syracuse, NY
     # Step 1: Geocoding API to get lat/lon
-    geocode_url = f"http://api.openweathermap.org/geo/1.0/direct"
+    geocode_url = f"https://api.openweathermap.org/geo/1.0/direct"
     geocode_params = {
         "q": location,
         "limit": 1,
