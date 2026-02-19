@@ -62,7 +62,7 @@ def get_weather(location: str) -> dict:
     location_resolved = ", ".join([p for p in [name, state, country] if p]).strip()
 
     # Step 2: Current Weather API to get weather details - by lat/lon
-    weather_url = f"http://api.openweathermap.org/data/2.5/weather"
+    weather_url = f"https://api.openweathermap.org/data/2.5/weather"
     weather_params = {"lat": lat, "lon": lon, "appid": WEATHER_API_KEY, "units": units_param}
     weather_response = requests.get(weather_url, params=weather_params, timeout=15)
 
