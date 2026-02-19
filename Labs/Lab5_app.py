@@ -10,7 +10,7 @@ import folium
 
 # ---- Configuration 
 st.set_page_config(page_title="Lab 5", page_icon="🧣", layout="wide")  
-st.title("Lab 5: What to Wear Bot 🧣🌦🧥")
+st.title("Lab 5: 👟👙☀️ What to Wear Bot 🧣🌦🧥")
 st.write("Enter a city and I'll tell you what to wear based on the current weather conditions!")
 
 OPENAI_API_KEY = st.secrets["OPEN_AI_KEY"] # It's already set in Streamlit app settings
