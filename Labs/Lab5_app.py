@@ -72,6 +72,11 @@ if st.button("Get Weather"):
 
 # -------- Display weather data 
 
+weather_data = None
+lat = None
+lon = None
+full_address = None 
+
 if weather_data:
     
     st.subheader(f"Current Weather: {weather_data['name']}")
