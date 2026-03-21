@@ -18,7 +18,7 @@ from PyPDF2 import PdfReader
 # 3. Paths (PDFs are inside Labs/Lab-04-Data)
 # ----------------------------
 BASE_DIR = Path(__file__).resolve().parents[1]             # repo root
-PDF_FOLDER = BASE_DIR / "Labs" / "Lab-04-Data"             # 7 PDFs live here
+PDF_FOLDER = BASE_DIR / "Labs" / "Lab-06-Data"             # 7 PDFs live here
 
 # On Streamlit Cloud, /tmp is the safest writable location
 CHROMA_DIR = Path("/tmp") / "ChromaDB_for_Lab"
