@@ -23,7 +23,7 @@ Lab5_page = st.Page("Labs/Lab5_app.py", title="Lab 5", icon="☀️")
 Lab6_page = st.Page(
     "Labs/Lab6_app.py",
     title="Lab 6",
-    icon="⋆ 🗞️ ₊˚⊹ ♡",
+    icon="🗞️",
     default=True
 )
 
