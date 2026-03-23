@@ -14,11 +14,9 @@ user_question = st.text_input(
 if user_question:
     response = client.responses.create(
         model="gpt-5",
-        instructions="You are a helpful assistant.",
+        instructions="You are a helpful assistant. Answer in a single paragraph,",
         input=user_question
     )
-    response = client.response.create(
-        model="gpt-5", input="What is an agent?")
-    print(response.output_text)
+    st.write(response.output_text)
     
     
