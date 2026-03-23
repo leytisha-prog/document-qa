@@ -19,7 +19,7 @@ Lab3_page = st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬")
 Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="🤖")
 Lab5_page = st.Page("Labs/Lab5_app.py", title="Lab 5", icon="☀️")
 
-# ✅ Make Lab 5 the default
+# ✅ Make Lab 6 the default
 Lab6_page = st.Page(
     "Labs/Lab6_app.py",
     title="Lab 6",
@@ -30,5 +30,5 @@ Lab6_page = st.Page(
 # ---------------------------------------------------
 # Navigation
 # ---------------------------------------------------
-pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page])
+pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page, Lab6_page])
 pg.run()    
