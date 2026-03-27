@@ -1,38 +1,43 @@
 import streamlit as st
-from openai import OpenAI 
-from pydantic import BaseModel 
+from openai import OpenAI
+from pydantic import BaseModel
 
-# Set OpenAI API key from Streamlit secrets
-client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
+# ----------------------------
+# Setup
+# ----------------------------
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+st.title("Lab 6: Multi-Turn Agent")
 
-# Show title and description.
-st.title("Lab 6 App - issued by Dre|Eddie|Jake")
-user_question = st.text_input(
-    "Type your question here..."
-)
-
-# ------ Session state (for chaining)
+# ----------------------------
+# Session state (for chaining)
+# ----------------------------
 if "last_id" not in st.session_state:
     st.session_state.last_id = None
 
-
-# ------ Sidebar controls 
-st.sidebar.header("Options")
+# ----------------------------
+# Sidebar options
+# ----------------------------
 structured = st.sidebar.checkbox("Structured output")
-stream_mode = st.sidebar.checkbox("Streaming (basic)", value=False)
+streaming = st.sidebar.checkbox("Streaming (basic)", value=False)
 
 st.caption("Web search enabled")
 
-# ------- Structured model
+# ----------------------------
+# Structured model
+# ----------------------------
 class ResearchSummary(BaseModel):
     main_answer: str
-    key_factos: list[str]
+    key_facts: list[str]
     source_hint: str
 
-# ------- User input 
+# ----------------------------
+# User input
+# ----------------------------
 question = st.text_input("Ask a question")
 
-# ------- Function to call API
+# ----------------------------
+# Function to call API
+# ----------------------------
 def get_response(user_input):
     base = {
         "model": "gpt-4o",
@@ -45,28 +50,24 @@ def get_response(user_input):
     if st.session_state.last_id:
         base["previous_response_id"] = st.session_state.last_id
 
-        # Structured mode
-        if structured:
-            response = client.responses.parse(
-                **base,
-                text_format=ResearchSummary
-            )
-            st.session_state.last_id = response.id
-            return response.output_parsed
-        
-        # Safe return
-        if response.output_parsed:
-            return response.output_parsed
-        else:
-            return response.output_text
-        
+    # Structured mode
+    if structured:
+        response = client.responses.parse(
+            **base,
+            text_format=ResearchSummary
+        )
+        st.session_state.last_id = response.id
+        return response.output_parsed
+
     # Normal mode
     else:
-            response = client.responses.create(**base)
-            st.session_state.last_id = response.id
-            return response.output_text
+        response = client.responses.create(**base)
+        st.session_state.last_id = response.id
+        return response.output_text
 
-# ------- Display response
+# ----------------------------
+# Display response
+# ----------------------------
 if question:
     result = get_response(question)
 
@@ -77,9 +78,14 @@ if question:
         for fact in result.key_facts:
             st.write(f"- {fact}")
         st.caption(result.source_hint)
-   
-# --------------- Follow-up (Part B)
 
+    # Normal output
+    else:
+        st.write(result)
+
+# ----------------------------
+# Follow-up (Part B)
+# ----------------------------
 if st.session_state.last_id:
     followup = st.text_input("Ask a follow-up question")
 
@@ -93,4 +99,4 @@ if st.session_state.last_id:
                 st.write(f"- {fact}")
             st.caption(result.source_hint)
         else:
-            st.write(result)   
+            st.write(result)
