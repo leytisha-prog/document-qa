@@ -3,7 +3,7 @@ from openai import OpenAI
 from pydantic import BaseModel 
 
 # Set OpenAI API key from Streamlit secrets
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 # Show title and description.
 st.title("Lab 6 App - issued by Dre|Eddie|Jake")
