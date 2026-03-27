@@ -1,6 +1,6 @@
 import streamlit as st
 from openai import OpenAI 
-import pydantic import BaseModel 
+from pydantic import BaseModel 
 
 # Set OpenAI API key from Streamlit secrets
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -81,4 +81,19 @@ if question:
             st.write(f"- {fact}")
         st.caption(result.source_hint)
 
-    
+# --------------- Follow-up (Part B)
+
+if st.session_state.last_id:
+    followup = st.text_input("Ask a follow-up question")
+
+    if followup:
+        result = get_response(followup)
+
+        if structured:
+            st.write(result.main_answer)
+            st.subheader("Key Facts")
+            for fact in result.key_facts:
+                st.write(f"- {fact}")
+            st.caption(result.source_hint)
+        else:
+            st.write(result)   
