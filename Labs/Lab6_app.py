@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # Setup
 # ----------------------------
 client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
-st.title("Lab 6: Multi-Turn Agent")
+st.title("Lab 6: Multi-Turn Agent - Dre|Eddie|Jake")
 
 # ----------------------------
 # Session state (for chaining)
