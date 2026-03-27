@@ -5,7 +5,7 @@ from pydantic import BaseModel
 # ----------------------------
 # Setup
 # ----------------------------
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 st.title("Lab 6: Multi-Turn Agent")
 
 # ----------------------------
