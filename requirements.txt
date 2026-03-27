@@ -8,6 +8,8 @@ requests
 streamlit_folium 
 folium
 geopy
+pydantic 
+
 
 
 
