@@ -54,8 +54,14 @@ def get_response(user_input):
             st.session_state.last_id = response.id
             return response.output_parsed
         
-        # Normal mode
+        # Safe return
+        if response.output_parsed:
+            return response.output_parsed
         else:
+            return response.output_text
+        
+    # Normal mode
+    else:
             response = client.responses.create(**base)
             st.session_state.last_id = response.id
             return response.output_text
@@ -71,16 +77,7 @@ if question:
         for fact in result.key_facts:
             st.write(f"- {fact}")
         st.caption(result.source_hint)
-
-    # Normal output
-    else:
-        st.write(result)
-        st.write(result.main_answer)
-        st.subheader("Key Facts")
-        for fact in result.key_facts:
-            st.write(f"- {fact}")
-        st.caption(result.source_hint)
-
+   
 # --------------- Follow-up (Part B)
 
 if st.session_state.last_id:
