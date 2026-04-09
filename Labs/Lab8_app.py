@@ -40,7 +40,8 @@ if "upload_response" not in st.session_state:
 
 st.divider()
 st.subheader("Image Upload to Poem with OpenAI")
-uploaded_file = st.file_uploader(type=["png", "jpg", "jpeg", "webp", "gif"] )      
+uploaded_file = st.file_uploader("Upload an image and I'll describe the image for you using a poem!",
+                                 type=["png", "jpg", "jpeg", "webp", "gif"] )      
 
 st.button("Write a Poem about this Uploaded Image")
 if uploaded_file is not None:
