@@ -11,6 +11,7 @@ if "url_response" not in st.session_state:
     st.session_state.url_response = None 
 
 st.divider()
+st.header("Lab 8: Image Reader with OpenAI")
 st.subheader("Image to Poem with OpenAI")
 st.write("Enter an image URL and I'll describe the image for you!")
 image_url = st.text_input("Image URL", placeholder="Enter an image URL here...")    
@@ -61,7 +62,7 @@ if uploaded_file is not None:
 if st.session_state.upload_response:
     st.write(st.session_state.upload_response) 
     st.image(uploaded_file)
-    
+
     
     
     
