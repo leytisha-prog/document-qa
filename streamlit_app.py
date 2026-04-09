@@ -31,5 +31,5 @@ Lab8_page = st.Page(
 # ---------------------------------------------------
 # Navigation
 # ---------------------------------------------------
-pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page, Lab6_page])
+pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page, Lab6_page, Lab8_page])
 pg.run()    
