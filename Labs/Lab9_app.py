@@ -3,7 +3,7 @@ from openai import OpenAI
 import json
 import os
 
-# -----------------------------
+
 # Page config
 # -----------------------------
 st.set_page_config(
@@ -13,14 +13,14 @@ st.set_page_config(
 
 st.title("🤖 Chatbot with Long-Term Memory")
 
-# -----------------------------
+
 # OpenAI client
 # -----------------------------
 client = OpenAI(api_key=st.secrets["OPEN_AI_KEY"])
 
 MEMORY_FILE = "memories.json"
 
-# -----------------------------
+
 # Memory helper functions
 # -----------------------------
 def load_memories():
@@ -103,13 +103,13 @@ Return ONLY a JSON list.
 
     return []
 
-# -----------------------------
+
 # Session state initialization
 # -----------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# -----------------------------
+
 # Sidebar memory display
 # -----------------------------
 st.sidebar.title("Memories")
@@ -130,7 +130,7 @@ if st.sidebar.button("Clear chat history"):
     st.session_state.messages = []
     st.rerun()
 
-# -----------------------------
+
 # Build system prompt with memories
 # -----------------------------
 system_message = (
@@ -145,14 +145,14 @@ if memories:
         + memory_str
     )
 
-# -----------------------------
+
 # Display chat history
 # -----------------------------
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# -----------------------------
+
 # Chat input
 # -----------------------------
 if prompt := st.chat_input("Say something about yourself or ask me a question..."):
@@ -178,7 +178,7 @@ if prompt := st.chat_input("Say something about yourself or ask me a question...
     with st.chat_message("assistant"):
         st.markdown(assistant_reply)
 
-    # -----------------------------
+  
     # Second LLM call: extract memories
     # -----------------------------
     new_memories = extract_new_memories(prompt, assistant_reply, memories)
