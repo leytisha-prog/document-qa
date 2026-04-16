@@ -19,12 +19,13 @@ Lab3_page = st.Page("Labs/Lab3_app.py", title="Lab 3", icon="🔬")
 Lab4_page = st.Page("Labs/Lab4_app.py", title="Lab 4", icon="🤖")
 Lab5_page = st.Page("Labs/Lab5_app.py", title="Lab 5", icon="☀️")
 Lab6_page = st.Page("Labs/Lab6_app.py", title="Lab 6", icon="🤖")
+Lab8_page = st.Page("Labs/Lab8_app.py", title="Lab 8", icon="🔗")
 
-# ✅ Make Lab 8 the default
-Lab8_page = st.Page(
-    "Labs/Lab8_app.py",
-    title="Lab 8",
-    icon="🔗",
+# ✅ Make Lab 9 the default
+Lab9_page = st.Page(
+    "Labs/Lab9_app.py",
+    title="Lab 9",
+    icon="🧠",
     default=True
 )
 
