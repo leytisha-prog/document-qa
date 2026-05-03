@@ -34,5 +34,5 @@ eval_app = st.Page(
 # ---------------------------------------------------
 # Navigation
 # ---------------------------------------------------
-pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page, Lab6_page, Lab8_page, Lab9_page])
+pg = st.navigation([Lab1_page, Lab2_page, Lab3_page, Lab4_page, Lab5_page, Lab6_page, Lab8_page, Lab9_page, eval_app])
 pg.run()    
