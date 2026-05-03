@@ -14,6 +14,6 @@ sklearn.metrics
 sklearn.linear_model
 sklearn.neural_network
 sklearn.feature_extraction.text
-
+sickit-learn
 
 

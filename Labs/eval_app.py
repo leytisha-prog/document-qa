@@ -12,7 +12,7 @@ test_data = pd.read_parquet("/content/test-product-review.parquet")
 
 train_data.head()
 
-#covert ratings into sentiment
+#convert ratings into sentiment
 def rating_to_sentiment(rating):
     if rating <= 2:
         return "negative"
@@ -66,3 +66,21 @@ print("Model 2 Accuracy:", accuracy2)
 #comparison of the models performances
 print("Logistic Regression:", accuracy1)
 print("MLP:", accuracy2)
+
+#model 2 alternative training
+from sklearn.neural_network import MLPClassifier
+#added hidden layers revision for deep learning
+model3 = MLPClassifier(max_iter=300, hidden_layer_sizes=(100,))
+model3.fit(X_train_vec, y_train)
+
+pred3 = model3.predict(X_test_vec)
+
+from sklearn.metrics import accuracy_score
+
+accuracy3 = accuracy_score(y_test, pred3)
+print("Model 3 Accuracy:", accuracy3)
+
+print("Logistic Regression:", accuracy1)
+print("MLP1:", accuracy2)
+print("MLP2:", accuracy3)
+
