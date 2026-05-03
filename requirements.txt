@@ -9,7 +9,11 @@ streamlit_folium
 folium
 geopy
 pydantic 
-
+sklearn
+sklearn.metrics
+sklearn.linear_model
+sklearn.neural_network
+sklearn.feature_extraction.text
 
 
 
